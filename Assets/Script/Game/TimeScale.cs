@@ -11,7 +11,9 @@ public class TimeScale : MonoBehaviour {
 	public static float TimeToStopTime = 25;//the lower this value is the faster the time will slow
 	public float TimeToStopTimeSetValue = 25;
 	public static float Timer = 0;          //When this hits TimeTostopTime the game will stop and this is also the varbile that is lowerd when player picks up clock
-    public static float timeSteps = 5;
+    public static int TimeSteps = 3;
+    public static float TimeEveryTimeStep = 8;
+
 	public static float fTimeScale = 1;     //The higher this value the slower time will go
 	public static bool timeTicking = true;
 
@@ -48,7 +50,7 @@ public class TimeScale : MonoBehaviour {
 		} else
 			Time.timeScale = 0;//if playing is paused this makes sure the game pauses
 		CheckTime();//Check the time
-		ReloadOnInput ();
+		//ReloadOnInput ();
 	}
 	void ReloadOnInput()//check if the player wants to restart 
 	{
@@ -75,11 +77,17 @@ public class TimeScale : MonoBehaviour {
 	}
 	public static float ReturnTimeScaleValue()//this returns a value between 1 - MaxValue;
 	{
-		float TimeScale = (Timer/TimeToStopTime)*TimeToEnd;
-		if (TimeScale < 1) {
-			TimeScale = 1;
-		}
-		return TimeScale;
+        //float TimeScale = (Timer/TimeToStopTime)*TimeToEnd;
+        //if (TimeScale < 1) {
+        //	TimeScale = 1;
+        //}
+        for (int i = 0; i < TimeSteps; i++)
+        {
+
+        }
+
+        
+        //return TimeScale;
 	}
 	public static void AddTime(float addTime) {//This function is called from other classes to add time as when taking a clock
 		Timer -= addTime;
