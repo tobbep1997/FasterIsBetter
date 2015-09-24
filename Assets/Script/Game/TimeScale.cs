@@ -57,7 +57,7 @@ public class TimeScale : MonoBehaviour {
 		} else
 			Time.timeScale = 0;//if playing is paused this makes sure the game pauses
 		CheckTime();//Check the time
-		//ReloadOnInput ();
+		ReloadOnInput ();
 	}
 	void ReloadOnInput()//check if the player wants to restart 
 	{

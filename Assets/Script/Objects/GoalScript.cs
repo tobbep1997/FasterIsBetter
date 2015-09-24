@@ -57,18 +57,19 @@ public class GoalScript : MonoBehaviour {
                 Score.FinishLevel(UIBehavior.fCurrentTime);
 				Wonned = true;
 			}
-            other.GetComponent<CharacterController>().enabled = false;
+            try
+            {
+                other.GetComponent<CharacterController>().enabled = false;
+            }
+            catch (System.Exception)
+            {
+                other.transform.parent.GetComponent<CharacterController>().enabled = false;
+                throw;
+            }
+            if (other.GetComponent<CharacterController>() == null)
+            {
+                other.transform.parent.GetComponent<CharacterController>().enabled = false;
+            }
 		}
-	}
-	//void Update()
-	//{
-	//	if (Wonned) {
-	//		//timer += TimeScale.DeltaTime;
-	//		//if (timer >= timerBeforeEnd) {
-	//			Application.LoadLevel(CurrentLevel + 1);
-	//			TimeScale.timeTicking = true;
-	//		//}
-
-	//	}
-	//}    
+	}   
 }

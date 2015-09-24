@@ -25,7 +25,7 @@ public class SaveGame : MonoBehaviour {
 	}
     void Update()
     {
-        if (Input.GetKey(KeyCode.Y))
+        if (Input.GetKey(KeyCode.T))
         {
             PlayerPrefs.DeleteAll();
         }

@@ -17,7 +17,7 @@ public class UIBehavior : MonoBehaviour {
 
 	private static bool bDead = false;  //player dead
     public Canvas cDead, cVictory;                //a canvas that is showd when the player is dead
-	private static bool bVicory = false;//a canvas that is showd when the player has won
+	static bool bVicory = false;//a canvas that is showd when the player has won
 
 	int iPreviousTime;                  //the time the previous game tick
 
@@ -25,8 +25,11 @@ public class UIBehavior : MonoBehaviour {
 	{
 		fCurrentTime = fStartTime;
         cVictory.enabled = false;
+        bVicory = false;
+        print("hellogjhfdjgiuldfayhgrsajhtfgruyk");
 	}
-	void Update()
+
+    void Update()
 	{
         //if the player is playing update this script
 		if (TimeScale.playing && TimeScale.timeTicking) {
