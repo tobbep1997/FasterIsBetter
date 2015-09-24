@@ -79,7 +79,7 @@ public class TimeScale : MonoBehaviour {
 	void CheckTime()//checks if the timescale has hit its mark and restart the game if it has
 	{
 		if (CurrentTimeStep >= TimeSteps) {		
-			UIBehavior.Restart();					
+			UIBehavior.Dead();					
 		}
 	}
 	public static float ReturnTimeScaleStateValue()//this returns a value between 1 - MaxValue;

@@ -25,26 +25,38 @@ public class UIBehavior : MonoBehaviour {
 	{
 		fCurrentTime = fStartTime;
         cVictory.enabled = false;
-        bVicory = false;
-        print("hellogjhfdjgiuldfayhgrsajhtfgruyk");
+        cDead.enabled = false;
+        bDead = false;
+        bVicory = false; 
 	}
 
     void Update()
 	{
         //if the player is playing update this script
-		if (TimeScale.playing && TimeScale.timeTicking) {
+		if (TimeScale.playing && TimeScale.timeTicking && !bVicory && !bDead) {
 			Timer();
 			TimeSpeedIndicator();
 			PlayClockSound(fCurrentTime);
 		}
-        if (bVicory)
-        {
+        if (bVicory)        
             cVictory.enabled = true;
-        }
+        if (bDead)
+            cDead.enabled = true;
+
+        
 	}
-	public static void Dead(bool value)
+	public static void Dead()
 	{
-		bDead = value;
+		bDead = true;
+        try
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController>().enabled = false;
+        }
+        catch (Exception)
+        {
+            GameObject.FindGameObjectWithTag("Player").transform.parent.GetComponent<CharacterController>().enabled = false;
+            throw;
+        }
 	}
 	public static void Vicory()
 	{
@@ -117,8 +129,7 @@ public class UIBehavior : MonoBehaviour {
 	private void OutOfTime(float currentTime)
 	{
 		if (currentTime <= 0) {
-			TimeScale.StopTime(true);
-			Restart();
+            Dead();
 		}
 	}
     //this convers the current time to a clocks string {00:00}
