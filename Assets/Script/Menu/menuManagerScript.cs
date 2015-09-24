@@ -24,16 +24,16 @@ public class menuManagerScript : MonoBehaviour {
 
 	void Update () 
 	{
-		//clicking L will load to where the player was at its latest level
-		/*if (Input.GetKeyDown (KeyCode.L)) {
-			//for (int i = 0; i < PlayerPrefs.GetInt("GameSave1"); i++) {
-			//Application.LoadLevel(i);
-			//}
+        //clicking L will load to where the player was at its latest level
+        if (Input.GetKeyDown (KeyCode.L)) {
+			for (int i = 0; i < PlayerPrefs.GetInt("GameSave1"); i++) {
+			Application.LoadLevel(i);
+			}
 			Application.LoadLevel(PlayerPrefs.GetInt("GameSave1"));
-		}*/
-	
-	}
-	public void Load_Latest_Level()
+		}
+
+    }
+    public void Load_Latest_Level()
 	{
 		Application.LoadLevel(PlayerPrefs.GetInt("GameSave1"));
 	}

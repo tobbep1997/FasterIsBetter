@@ -12,7 +12,10 @@ public class TimeScale : MonoBehaviour {
 	public float TimeToStopTimeSetValue = 25;
 	public static float Timer = 0;          //When this hits TimeTostopTime the game will stop and this is also the varbile that is lowerd when player picks up clock
     public static int TimeSteps = 3;
-    public static float TimeEveryTimeStep = 8;
+    public static int CurrentTimeStep;
+    public static float TimeEveryTimeStep = 7;
+    public static float LowestTimeScaleValue = -1;
+    
 
 	public static float fTimeScale = 1;     //The higher this value the slower time will go
 	public static bool timeTicking = true;
@@ -30,13 +33,14 @@ public class TimeScale : MonoBehaviour {
 	private static bool WasPaused = false;
 	private static bool isThereValues = false;
 
+    private static float refValue;
+
 	void Start()
 	{
 		fStarttimeScale = Time.timeScale;
 		fixedDeltaTime = Time.fixedDeltaTime;
 		fixedMaximumDeltaTime = Time.maximumDeltaTime;
 		TimeToStopTime = TimeToStopTimeSetValue;
-
 	}
 	void Update()
 	{
@@ -67,30 +71,39 @@ public class TimeScale : MonoBehaviour {
 	void SlowTime()//this makes sure the time slows down the correct amout based on time
 	{
 		Timer += DeltaTime;
-		fTimeScale = ReturnTimeScaleValue();
+        fTimeScale = Mathf.SmoothDamp(fTimeScale, ReturnTimeScaleStateValue(), ref refValue, .2f);
 	}
 	void CheckTime()//checks if the timescale has hit its mark and restart the game if it has
 	{
-		if (fTimeScale >= TimeToEnd) {		
+		if (CurrentTimeStep >= TimeSteps) {		
 			UIBehavior.Restart();					
 		}
 	}
-	public static float ReturnTimeScaleValue()//this returns a value between 1 - MaxValue;
+	public static float ReturnTimeScaleStateValue()//this returns a value between 1 - MaxValue;
 	{
         //float TimeScale = (Timer/TimeToStopTime)*TimeToEnd;
         //if (TimeScale < 1) {
         //	TimeScale = 1;
         //}
-        for (int i = 0; i < TimeSteps; i++)
+        float TimeToRemove = 1 - LowestTimeScaleValue;
+        float RemoveTime = TimeToRemove / TimeSteps;
+        int x = 0;
+        for (int i = 0; i < TimeSteps + 1; i++)
         {
-
+            if (Timer >= TimeEveryTimeStep * i)
+            {
+                x = i;
+            }
         }
-
+        CurrentTimeStep = x;
+        print(fTimeScale);
+        float temp = RemoveTime * x;
+        return 1 + temp;
         
         //return TimeScale;
 	}
-	public static void AddTime(float addTime) {//This function is called from other classes to add time as when taking a clock
-		Timer -= addTime;
+	public static void AddClocks(int clocks) {//This function is called from other classes to add time as when taking a clock
+		Timer -= clocks * TimeEveryTimeStep;
 	}
 	public static void RemoveTime(float removeTime)//This function is called from other classes to remove time as when trying to contest an enemy
 	{

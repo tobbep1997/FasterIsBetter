@@ -51,19 +51,19 @@ public class GoalScript : MonoBehaviour {
 				TimeScale.ResetValues(true);
 				Instantiate(particle,transform.position,Quaternion.identity);
 				TimeScale.timeTicking = false;
-				Wonned = true;
+				//Wonned = true;
 			}
 		}
 	}
 	void Update()
 	{
 		if (Wonned) {
-			timer += TimeScale.DeltaTime;
-			if (timer >= timerBeforeEnd) {
+			//timer += TimeScale.DeltaTime;
+			//if (timer >= timerBeforeEnd) {
 				Application.LoadLevel(CurrentLevel + 1);
 				TimeScale.timeTicking = true;
-			}
+			//}
 
 		}
-	}
+	}    
 }

@@ -9,14 +9,14 @@ using UnityEngine.UI;
 public class UIBehavior : MonoBehaviour {
 
 	public Text TimerText;              //The timer text
-	public Slider TimeScaleSlider;      //The time scale indicator
+    public Image[] HealthClocks;     //The time scale indicator
 	public static float fCurrentTime;          //The currentTime in a float format
 	public float fStartTime;            //The start time that the timer is counting down from
 
 	public AudioSource ClockSound;      //A sound that plays at the start of every second
 
 	private static bool bDead = false;  //player dead
-	public Canvas cDead;                //a canvas that is showd when the player is dead
+    public Canvas cDead, cVictory;                //a canvas that is showd when the player is dead
 	private static bool bVicory = false;//a canvas that is showd when the player has won
 
 	int iPreviousTime;                  //the time the previous game tick
@@ -33,6 +33,10 @@ public class UIBehavior : MonoBehaviour {
 			TimeSpeedIndicator();
 			PlayClockSound(fCurrentTime);
 		}
+        if (bVicory)
+        {
+
+        }
 	}
 	public static void Dead(bool value)
 	{
@@ -73,12 +77,23 @@ public class UIBehavior : MonoBehaviour {
     //This updates the timescale indicator
 	void TimeSpeedIndicator()
 	{
-		TimeScaleSlider.value = TimeScaleToIndicator();
+        int x = TimeScale.CurrentTimeStep;
+        int removedClocks = 0;
+        for (int i = 0; i < HealthClocks.Length; i++)
+        {
+            if (x > removedClocks)
+            {
+                HealthClocks[i].enabled = false;
+                removedClocks++;
+            }
+            else
+                HealthClocks[i].enabled = true;
+        }
 	}
     //this returns a % values of the timescale
-	float TimeScaleToIndicator()
+	int RemoveClocks()
 	{	
-		return 1 - ((TimeScale.fTimeScale - 1)/(TimeScale.TimeToEnd - 1));	
+		return TimeScale.CurrentTimeStep;	
 	}
 
 	public static void RemoveTime(float time)

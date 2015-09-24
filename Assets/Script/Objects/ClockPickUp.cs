@@ -9,7 +9,7 @@ public class ClockPickUp : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.tag == "Player") {
-			TimeScale.AddTime (TimerToReduce);
+			TimeScale.AddClocks(1);
 			Destroy (gameObject);
 		}
 	}
