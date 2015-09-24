@@ -5,19 +5,29 @@ public class Score : MonoBehaviour
 {
     public static int CombindScore;
     public static int ScoreMult = 4;
+    public static int LevelScore;
+    public UnityEngine.UI.Text ScoreText,TotalScoreText;
 
     
-    public static void FinishLevel(float TimeLeft, bool DoubleScore)
+    public static void FinishLevel(float TimeLeft)
     {
-        int Score = (int)TimeLeft * ScoreMult;
-        if (DoubleScore)        
-            Score *= 2;
-        CombindScore += Score;
+        LevelScore = (int)TimeLeft * ScoreMult;     
+        if (PlayerPrefs.GetInt("GameSave1") >= Application.loadedLevel)
+            CombindScore += LevelScore;
         SaveScoreValues();
+    }
+    public static void DobuleScore()
+    {       
+        LevelScore *= 2;
     }
     private static void SaveScoreValues()
     {
         PlayerPrefs.SetInt("HighScore", CombindScore);
         PlayerPrefs.Save();
+    }
+    void Update()
+    {
+        ScoreText.text = LevelScore.ToString();
+        TotalScoreText.text = PlayerPrefs.GetInt("HighScore").ToString();
     }
 }

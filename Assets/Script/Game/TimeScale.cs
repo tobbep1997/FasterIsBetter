@@ -47,8 +47,11 @@ public class TimeScale : MonoBehaviour {
 		//Checks if the game is playing
 		if (playing)		
 		{
-			UpdateTimes();	//Updates all the timeings
-			SlowTime();		//Makes sure that the time slows down at the correct speed
+            if (timeTicking)
+            {
+                UpdateTimes();  //Updates all the timeings
+                SlowTime();     //Makes sure that the time slows down at the correct speed
+            }
 			DeltaTime = GetRealDelta(PreviousUpdateTickTime);//Updates deltaTime
 			PreviousUpdateTickTime = Time.realtimeSinceStartup;
 		} else
@@ -96,7 +99,7 @@ public class TimeScale : MonoBehaviour {
             }
         }
         CurrentTimeStep = x;
-        print(fTimeScale);
+
         float temp = RemoveTime * x;
         return 1 + temp;
         

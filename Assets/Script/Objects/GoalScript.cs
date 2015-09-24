@@ -14,6 +14,8 @@ public class GoalScript : MonoBehaviour {
 	public Transform particle;
 	public bool LoadMenu = false;//loads to menu if checked
 
+
+
 	public float TimerBeforeEnd
 	{
 		get
@@ -42,7 +44,7 @@ public class GoalScript : MonoBehaviour {
 	}
 	void OnTriggerEnter2D(Collider2D other)//check if the object trigger interact with the player
 	{
-		if (other.tag == "Player") {
+		if (other.tag == "Player" && !Wonned) {
 			if (LoadMenu) {
 				Application.LoadLevel("Main_menu");
 			}
@@ -51,19 +53,22 @@ public class GoalScript : MonoBehaviour {
 				TimeScale.ResetValues(true);
 				Instantiate(particle,transform.position,Quaternion.identity);
 				TimeScale.timeTicking = false;
-				//Wonned = true;
+                UIBehavior.Vicory();
+                Score.FinishLevel(UIBehavior.fCurrentTime);
+				Wonned = true;
 			}
+            other.GetComponent<CharacterController>().enabled = false;
 		}
 	}
-	void Update()
-	{
-		if (Wonned) {
-			//timer += TimeScale.DeltaTime;
-			//if (timer >= timerBeforeEnd) {
-				Application.LoadLevel(CurrentLevel + 1);
-				TimeScale.timeTicking = true;
-			//}
+	//void Update()
+	//{
+	//	if (Wonned) {
+	//		//timer += TimeScale.DeltaTime;
+	//		//if (timer >= timerBeforeEnd) {
+	//			Application.LoadLevel(CurrentLevel + 1);
+	//			TimeScale.timeTicking = true;
+	//		//}
 
-		}
-	}    
+	//	}
+	//}    
 }

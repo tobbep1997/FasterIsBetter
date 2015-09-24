@@ -24,6 +24,7 @@ public class UIBehavior : MonoBehaviour {
 	void Start()
 	{
 		fCurrentTime = fStartTime;
+        cVictory.enabled = false;
 	}
 	void Update()
 	{
@@ -35,7 +36,7 @@ public class UIBehavior : MonoBehaviour {
 		}
         if (bVicory)
         {
-
+            cVictory.enabled = true;
         }
 	}
 	public static void Dead(bool value)
