@@ -11,9 +11,12 @@ public class Score : MonoBehaviour
     
     public static void FinishLevel(float TimeLeft)
     {
-        LevelScore = (int)TimeLeft * ScoreMult;     
-        if (PlayerPrefs.GetInt("GameSave1") >= Application.loadedLevel)
+        LevelScore = (int)TimeLeft * ScoreMult;
+        CombindScore = PlayerPrefs.GetInt("HighScore");
+        if (PlayerPrefs.GetInt("GameSave1") <= Application.loadedLevel)
+        {
             CombindScore += LevelScore;
+        }
         SaveScoreValues();
     }
     public static void DobuleScore()

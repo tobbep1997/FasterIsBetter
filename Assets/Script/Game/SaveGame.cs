@@ -12,10 +12,22 @@ public class SaveGame : MonoBehaviour {
 
 	public int levelSave = 0;
 
+
+
 	void Start () {
+        
 		if (PlayerPrefs.GetInt("GameSave1") < Application.loadedLevel) 
 			PlayerPrefs.SetInt ("GameSave1", Application.loadedLevel);		
 		PlayerPrefs.Save ();
-
+       
+        print(PlayerPrefs.GetInt("GameSave1") + " " + Application.loadedLevel + " " + PlayerPrefs.GetInt("HighScore"));
+        
 	}
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Y))
+        {
+            PlayerPrefs.DeleteAll();
+        }
+    }
 }
