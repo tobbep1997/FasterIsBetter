@@ -41,6 +41,7 @@ public class TimeScale : MonoBehaviour {
 		fixedDeltaTime = Time.fixedDeltaTime;
 		fixedMaximumDeltaTime = Time.maximumDeltaTime;
 		TimeToStopTime = TimeToStopTimeSetValue;
+        
 	}
 	void Update()
 	{
