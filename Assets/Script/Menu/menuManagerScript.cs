@@ -39,6 +39,8 @@ public class menuManagerScript : MonoBehaviour {
 	}
 	public void exit_Button()
 	{
+        if (Application.platform != RuntimePlatform.WindowsEditor)
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
 		Application.Quit();
 	}
 	public void levelOneButton()
