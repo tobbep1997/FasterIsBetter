@@ -42,7 +42,7 @@ public class TutorialScript : MonoBehaviour {
 	void TutorialStateChecker()
 	{
 		if (Input.touchCount > 0) {
-			bool resetDir = true;
+			//bool resetDir = true;
 			for (int i = 0; i < Input.touchCount; i++) {
 				if (Input.GetTouch(i).position.x >= (Screen.width/3)*2 && Input.GetTouch(i).position.y < (Screen.height/3)*2) {
 					firstClicked = true;

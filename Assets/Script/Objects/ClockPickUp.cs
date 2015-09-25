@@ -6,10 +6,12 @@ using System.Collections;
 /// </summary>
 public class ClockPickUp : MonoBehaviour {
 	public float TimerToReduce = 5;
+    public int score = 15;
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.tag == "Player") {
 			TimeScale.AddClocks(1);
+            Score.AddScore(score);
 			Destroy (gameObject);
 		}
 	}
