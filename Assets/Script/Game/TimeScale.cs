@@ -8,12 +8,13 @@ public class TimeScale : MonoBehaviour {
 	public const int MaxTime = 1;           //This is the lowest timescale can become so the time aint speed up  
 	public const float TimeToEnd = 5;       //this is the higest the timescale can go before the game stops
 
-	public static float TimeToStopTime = 25;//the lower this value is the faster the time will slow
-	public float TimeToStopTimeSetValue = 25;
+	//public static float TimeToStopTime = 25;//the lower this value is the faster the time will slow
+	//public float TimeToStopTimeSetValue = 25;
 	public static float Timer = 0;          //When this hits TimeTostopTime the game will stop and this is also the varbile that is lowerd when player picks up clock
     public static int TimeSteps = 3;
     public static int CurrentTimeStep;
     public static float TimeEveryTimeStep = 7;
+    public static float TimeInCurrentTimeStep;
     public static float LowestTimeScaleValue = -1;
     
 
@@ -40,7 +41,7 @@ public class TimeScale : MonoBehaviour {
 		fStarttimeScale = Time.timeScale;
 		fixedDeltaTime = Time.fixedDeltaTime;
 		fixedMaximumDeltaTime = Time.maximumDeltaTime;
-		TimeToStopTime = TimeToStopTimeSetValue;
+		//TimeToStopTime = TimeToStopTimeSetValue;
         
 	}
 	void Update()
@@ -100,7 +101,8 @@ public class TimeScale : MonoBehaviour {
             }
         }
         CurrentTimeStep = x;
-
+        TimeInCurrentTimeStep = Timer - (CurrentTimeStep * TimeEveryTimeStep);
+        
         float temp = RemoveTime * x;
         return 1 + temp;
         

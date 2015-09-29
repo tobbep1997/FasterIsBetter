@@ -10,6 +10,7 @@ public class UIBehavior : MonoBehaviour {
 
 	public Text TimerText;              //The timer text
     public Image[] HealthClocks;     //The time scale indicator
+    public int AnimSteps = 8;
 	public static float fCurrentTime;          //The currentTime in a float format
 	public float fStartTime;            //The start time that the timer is counting down from
 
@@ -93,8 +94,10 @@ public class UIBehavior : MonoBehaviour {
     //This updates the timescale indicator
 	void TimeSpeedIndicator()
 	{
+        
         int x = TimeScale.CurrentTimeStep;
         int removedClocks = 0;
+        
         for (int i = 0; i < HealthClocks.Length; i++)
         {
             if (x > removedClocks)
@@ -105,8 +108,19 @@ public class UIBehavior : MonoBehaviour {
             else
                 HealthClocks[i].enabled = true;
         }
+
+        float AnimState = TimeScale.TimeEveryTimeStep / AnimSteps;
+        print(TimeScale.CurrentTimeStep);
+        for (int i = 0; i < AnimSteps; i++)
+        {
+            if (TimeScale.TimeInCurrentTimeStep >= i* AnimState)
+            {
+                HealthClocks[TimeScale.CurrentTimeStep].GetComponent<Animator>().SetFloat("State", i * AnimState);
+            }
+                 
+        }
 	}
-    //this returns a % values of the timescale
+
 	int RemoveClocks()
 	{	
 		return TimeScale.CurrentTimeStep;	

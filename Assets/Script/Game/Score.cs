@@ -40,7 +40,7 @@ public class Score : MonoBehaviour
     }
     void Update()
     {
-        print(LevelScore);
+
         if (ScoreText == null || TotalScoreText == null)
         {
             return;
