@@ -115,9 +115,16 @@ public class UIBehavior : MonoBehaviour {
         {
             if (TimeScale.TimeInCurrentTimeStep >= i* AnimState)
             {
-                HealthClocks[TimeScale.CurrentTimeStep].GetComponent<Animator>().SetFloat("State", i * AnimState);
-            }
-                 
+                for (int y = 0; y < HealthClocks.Length; y++)
+                {
+                    if (x > removedClocks)
+                    {
+                        HealthClocks[y].GetComponent<Animator>().SetFloat("State", i * AnimState);
+                    }
+                    else
+                        HealthClocks[y].GetComponent<Animator>().SetFloat("State", 0);
+                }                
+            }                 
         }
 	}
 
