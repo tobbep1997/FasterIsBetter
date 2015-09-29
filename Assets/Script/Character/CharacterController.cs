@@ -43,7 +43,7 @@ public class CharacterController : MonoBehaviour
     private float fPreviousYPos;            //its the character position on the Y-axis the previous game tick
 
 
-    private bool IsTouch = false;
+    private bool IsTouch = true;
 
 
     void Start()
