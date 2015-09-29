@@ -27,6 +27,12 @@ public class Score : MonoBehaviour
     public static void DobuleScore()
     {
         LevelScore *= 2;
+        CombindScore = PlayerPrefs.GetInt("HighScore");
+        if (PlayerPrefs.GetInt("GameSave1") <= Application.loadedLevel)
+        {
+            CombindScore += LevelScore;
+        }
+        SaveScoreValues();
     }
     private static void SaveScoreValues()
     {

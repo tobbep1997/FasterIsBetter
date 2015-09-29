@@ -46,7 +46,11 @@ public class TimeScale : MonoBehaviour {
 	}
 	void Update()
 	{
-		//Checks if the game is playing
+        //Checks if the game is playing
+        if (!playing)
+        {
+            PreviousUpdateTickTime = Time.realtimeSinceStartup;
+        }
 		if (playing)		
 		{
             if (timeTicking)

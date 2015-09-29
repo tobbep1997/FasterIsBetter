@@ -35,6 +35,7 @@ public class UIBehavior : MonoBehaviour {
 	{
         //if the player is playing update this script
 		if (TimeScale.playing && TimeScale.timeTicking && !bVicory && !bDead) {
+           
 			Timer();
 			TimeSpeedIndicator();
 			PlayClockSound(fCurrentTime);
@@ -93,8 +94,7 @@ public class UIBehavior : MonoBehaviour {
 	}
     //This updates the timescale indicator
 	void TimeSpeedIndicator()
-	{
-        
+	{        
         int x = TimeScale.CurrentTimeStep;
         int removedClocks = 0;
         
@@ -110,21 +110,22 @@ public class UIBehavior : MonoBehaviour {
         }
 
         float AnimState = TimeScale.TimeEveryTimeStep / AnimSteps;
-        print(TimeScale.CurrentTimeStep);
+       
         for (int i = 0; i < AnimSteps; i++)
         {
             if (TimeScale.TimeInCurrentTimeStep >= i* AnimState)
             {
-                for (int y = 0; y < HealthClocks.Length; y++)
-                {
-                    if (x > removedClocks)
-                    {
-                        HealthClocks[y].GetComponent<Animator>().SetFloat("State", i * AnimState);
-                    }
-                    else
-                        HealthClocks[y].GetComponent<Animator>().SetFloat("State", 0);
-                }                
+                HealthClocks[TimeScale.CurrentTimeStep].GetComponent<Animator>().SetFloat("State", i * AnimState);                             
             }                 
+        }
+        for (int i = 0; i < HealthClocks.Length; i++)
+        {
+            if (i == 0)
+                continue;
+            if (HealthClocks[i -1].enabled == true)
+            {
+                HealthClocks[i].GetComponent<Animator>().SetFloat("State", -1);
+            }
         }
 	}
 

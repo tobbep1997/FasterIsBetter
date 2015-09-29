@@ -33,6 +33,7 @@ public class GameSettings : MonoBehaviour {
     }
     public void LoadMainMenu()
     {
+        QuitMenu();
         Application.LoadLevel("Main_Menu");
     }
 
