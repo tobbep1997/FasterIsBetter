@@ -12,13 +12,13 @@ public class GameSettings : MonoBehaviour {
     {
         menuUp = true;
         DisplayButtons(menuUp);
-        TimeScale.playing = false;
+        TimeScale.timeTicking = false;
     }
     public void QuitMenu()
     {
         menuUp = false;
-        DisplayButtons(menuUp);
-        TimeScale.playing = true;
+        TimeScale.timeTicking = true;
+        DisplayButtons(menuUp);        
     }
     public void DisplayButtons(bool input)
     {

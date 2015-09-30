@@ -49,6 +49,20 @@ public class menuManagerScript : MonoBehaviour {
 		TimeScale.ResetValues(false);
 		Application.LoadLevel("TutorialLevel");
 	}
+    public void LoadLatestLevel()
+    {
+        Instantiate(audioManager);
+        TimeScale.ResetValues(false);
+        if (PlayerPrefs.GetInt("GameSave1") < 3)
+        {
+            if (Application.platform != RuntimePlatform.WindowsEditor)
+                Application.LoadLevel(2);
+            else
+                Application.LoadLevel(3);
+        }
+        else
+            Application.LoadLevel(PlayerPrefs.GetInt("GameSave1"));
+    }
 	public void options_Button()
 	{
 		startMenuPanel.GetComponent<CanvasGroup>().alpha = 0;

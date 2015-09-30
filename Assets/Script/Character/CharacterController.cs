@@ -48,7 +48,11 @@ public class CharacterController : MonoBehaviour
 
     void Start()
     {
-        body2D = GetComponent<Rigidbody2D>();
+        if (Application.platform != RuntimePlatform.WindowsEditor)
+            IsTouch = true;
+        else
+            IsTouch = false;
+            body2D = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         fPreviousYPos = transform.position.y;
 

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Score : MonoBehaviour
 {
-    public static int CombindScore;
+    public static int HighScore;
     public static int ScoreMult = 4;
     public static int LevelScore;
     public UnityEngine.UI.Text ScoreText, TotalScoreText;
@@ -17,26 +17,26 @@ public class Score : MonoBehaviour
     public static void FinishLevel(float TimeLeft)
     {
         LevelScore = (int)TimeLeft * ScoreMult;
-        CombindScore = PlayerPrefs.GetInt("HighScore");
-        if (PlayerPrefs.GetInt("GameSave1") <= Application.loadedLevel)
+        HighScore = PlayerPrefs.GetInt(Application.loadedLevel.ToString() + "HighScore");
+        if (LevelScore > HighScore)
         {
-            CombindScore += LevelScore;
+            HighScore = LevelScore;
         }
         SaveScoreValues();
     }
     public static void DobuleScore()
     {
         LevelScore *= 2;
-        CombindScore = PlayerPrefs.GetInt("HighScore");
-        if (PlayerPrefs.GetInt("GameSave1") <= Application.loadedLevel)
+        HighScore = PlayerPrefs.GetInt(Application.loadedLevel.ToString() + "HighScore");
+        if (LevelScore > HighScore)
         {
-            CombindScore += LevelScore;
+            HighScore = LevelScore;
         }
         SaveScoreValues();
     }
     private static void SaveScoreValues()
     {
-        PlayerPrefs.SetInt("HighScore", CombindScore);
+        PlayerPrefs.SetInt(Application.loadedLevel.ToString() + "HighScore", HighScore);
         PlayerPrefs.Save();
     }
     public void ResetScore()
@@ -52,6 +52,6 @@ public class Score : MonoBehaviour
             return;
         }
         ScoreText.text = LevelScore.ToString();
-        TotalScoreText.text = PlayerPrefs.GetInt("HighScore").ToString();
+        TotalScoreText.text = PlayerPrefs.GetInt(Application.loadedLevel.ToString() + "HighScore").ToString();
     }
 }
