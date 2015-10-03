@@ -24,12 +24,7 @@ public class UnityAds : MonoBehaviour
 
     public void ShowAd()
     {
-#if UNITY_IPHONE
 
-#endif
-#if UNITY_ANDROID
-
-#endif
         timeDone = new DateTime(SetTime());
         if (Advertisement.IsReady() && DateTime.Now > timeDone)
         {
