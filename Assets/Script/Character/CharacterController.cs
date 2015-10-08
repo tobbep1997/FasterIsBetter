@@ -60,8 +60,10 @@ public class CharacterController : MonoBehaviour
     }
     void Update()                           //The reson i use Update instead of fixedupdate is that FixedUpdate is effected by TimeScale
     {
-        if (TimeScale.playing == false)
+        if (TimeScale.playing == false || TimeScale.timeTicking == false)
+        {
             return;
+        }
         //Here i call all the functions that are needed for the character to move and jump
         Jump();
         if (IsTouch)
