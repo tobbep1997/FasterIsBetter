@@ -52,7 +52,7 @@ public class LevelEdit : MonoBehaviour {
         for (float i = 0; i <= Mathf.PI * 2; i += Mathf.PI/2)
         {
             ray = new Ray2D(CurrentCollider.bounds.center, new Vector2(Mathf.Cos(i), Mathf.Sin(i)));
-            hits = Physics2D.RaycastAll(CurrentCollider.bounds.center, ray.direction, CurrentCollider.bounds.extents.x * 2);
+            hits = Physics2D.RaycastAll(CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(CurrentCollider.bounds.extents.sqrMagnitude));
 
             //Debug.DrawRay(CurrentCollider.bounds.center, ray.direction * CurrentCollider.bounds.extents.x*2, Color.red);
 
@@ -74,13 +74,30 @@ public class LevelEdit : MonoBehaviour {
         }
         return true;
     }
-    public bool CheckIfObjectAtSamePlace()
+    public Collider2D ReturnOtherColider()//This returns the other gameobjects collider if there is a tile on the same place at this tile
     {
-        Ray2D ray = new Ray2D(CurrentCollider.bounds.center,Vector2.zero);
-        RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin,ray.direction,CurrentCollider.bounds.extents.x);
+        Ray2D ray;
+        RaycastHit2D[] hits;
+        for (float i = 0; i <= Mathf.PI * 2; i += Mathf.PI / 2)
+        {
+            ray = new Ray2D(CurrentCollider.bounds.center, new Vector2(Mathf.Cos(i), Mathf.Sin(i)));
+            hits = Physics2D.RaycastAll(CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(CurrentCollider.bounds.extents.sqrMagnitude) / 2);
+            Debug.DrawRay(ray.origin, ray.direction * Mathf.Sqrt(CurrentCollider.bounds.extents.sqrMagnitude) / 2);
+        }
+        for (float i = 0; i <= Mathf.PI * 2; i += Mathf.PI / 2)
+        {
+            ray = new Ray2D(CurrentCollider.bounds.center, new Vector2(Mathf.Cos(i), Mathf.Sin(i)));
+            hits = Physics2D.RaycastAll(CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(CurrentCollider.bounds.extents.sqrMagnitude) / 2);
 
-
-
-        return true;
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.transform.gameObject != gameObject && !hit.collider.isTrigger)
+                {
+                    return CurrentCollider;
+                }
+            }
+        }
+        return null;
     }
+ 
 }
