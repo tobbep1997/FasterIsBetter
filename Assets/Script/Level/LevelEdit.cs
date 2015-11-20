@@ -13,22 +13,41 @@ public class LevelEdit : MonoBehaviour {
 	private Vector2 vCurrentPos,vPreviousPos;       //This is the current and the previous position of the tile
 
     [SerializeField]
-    private Collider2D CurrentCollider;
+    private Collider2D _CurrentCollider;
+    public Collider2D CurrentCollider
+    {
+        get { return _CurrentCollider; }
+        //set { _CurrentCollider = value; }
+    }
+    private bool _UseCollider;
+    public bool UseCollider
+    {
+        get { return _UseCollider; }
+    }
 
     private void Start()
     {
-        CurrentCollider = GetComponent<Collider2D>();
+        _CurrentCollider = GetComponent<Collider2D>();
         
     }
 	void Update ()
     {
         SetPosition();
 
-        if (CheckIfObjectsAllAround())
+        if (_CurrentCollider == null)
         {
-            
+            _CurrentCollider = GetComponent<Collider2D>();
+            if (_CurrentCollider == null)
+            {
+                DestroyImmediate(gameObject);
+            }
         }
 	}
+
+    public void UpdateColliderCheck()
+    {
+        _UseCollider = CheckIfObjectsAllAround();
+    }
 
     private void SetPosition()
     {
@@ -44,15 +63,16 @@ public class LevelEdit : MonoBehaviour {
     }
     public bool CheckIfObjectsAllAround()//if returns false there sould be a colider on it
     {
-        if (CurrentCollider.isTrigger)
+        if (_CurrentCollider.isTrigger)
             return true;
 
         Ray2D ray;
         RaycastHit2D[] hits;
+
         for (float i = 0; i <= Mathf.PI * 2; i += Mathf.PI/2)
         {
-            ray = new Ray2D(CurrentCollider.bounds.center, new Vector2(Mathf.Cos(i), Mathf.Sin(i)));
-            hits = Physics2D.RaycastAll(CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(CurrentCollider.bounds.extents.sqrMagnitude));
+            ray = new Ray2D(_CurrentCollider.bounds.center, new Vector2(Mathf.Cos(i), Mathf.Sin(i)));
+            hits = Physics2D.RaycastAll(_CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude));
 
             //Debug.DrawRay(CurrentCollider.bounds.center, ray.direction * CurrentCollider.bounds.extents.x*2, Color.red);
 
@@ -68,8 +88,8 @@ public class LevelEdit : MonoBehaviour {
             }
             if (!IntersectOtherObject)
             {
-                Debug.DrawRay(CurrentCollider.bounds.center, ray.direction * Mathf.Sqrt(CurrentCollider.bounds.extents.sqrMagnitude), Color.green);
-                //return false;
+                Debug.DrawRay(_CurrentCollider.bounds.center, ray.direction * Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude), Color.green);
+                return false;
             }
         }
         return true;
@@ -80,22 +100,30 @@ public class LevelEdit : MonoBehaviour {
         RaycastHit2D[] hits;
         for (float i = 0; i <= Mathf.PI * 2; i += Mathf.PI / 2)
         {
-            ray = new Ray2D(CurrentCollider.bounds.center, new Vector2(Mathf.Cos(i), Mathf.Sin(i)));
-            hits = Physics2D.RaycastAll(CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(CurrentCollider.bounds.extents.sqrMagnitude) / 2);
-            Debug.DrawRay(ray.origin, ray.direction * Mathf.Sqrt(CurrentCollider.bounds.extents.sqrMagnitude) / 2);
+            ray = new Ray2D(_CurrentCollider.bounds.center, new Vector2(Mathf.Cos(i), Mathf.Sin(i)));
+            hits = Physics2D.RaycastAll(_CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude) / 2);
+            Debug.DrawRay(ray.origin, ray.direction * Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude) / 2);
         }
         for (float i = 0; i <= Mathf.PI * 2; i += Mathf.PI / 2)
         {
-            ray = new Ray2D(CurrentCollider.bounds.center, new Vector2(Mathf.Cos(i), Mathf.Sin(i)));
-            hits = Physics2D.RaycastAll(CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(CurrentCollider.bounds.extents.sqrMagnitude) / 2);
+            ray = new Ray2D(_CurrentCollider.bounds.center, new Vector2(Mathf.Cos(i), Mathf.Sin(i)));
+            hits = Physics2D.RaycastAll(_CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude) / 2);
 
-            foreach (RaycastHit2D hit in hits)
+            for (int x = 0; x < hits.Length; x++)
             {
-                if (hit.transform.gameObject != gameObject && !hit.collider.isTrigger)
+                if (hits[x].transform.gameObject != gameObject && !hits[x].collider.isTrigger)
                 {
-                    return CurrentCollider;
+                    return hits[x].collider;
                 }
             }
+
+            //foreach (RaycastHit2D hit in hits)
+            //{
+            //    if (hit.transform.gameObject != gameObject && !hit.collider.isTrigger)
+            //    {
+            //        return hit.collider;
+            //    }
+            //}
         }
         return null;
     }

@@ -8,23 +8,47 @@ public class LevelEditMaster : MonoBehaviour
 {
     [SerializeField]
     private List<LevelEdit> LevelEdits;
-    [SerializeField]
-    private List<LevelEdit> LevelEditsWithColiders;
 
     [SerializeField]
-    private bool ActivateTileCleaner, ForceTileUpdate;
+    private bool activateTileCleaner, forceTileUpdate, enableAllColiders, updateCollidersToUse;
 
     private void Update()
     {
-        if (ActivateTileCleaner)
-        {
-            CleanTiles();
-            //ActivateTileCleaner = false;
-        }
+        CleanTiles();
+        UpdateTiles();
+        EnableAllColiders();
+        UpdateColliders();    
+    }
 
-        if (LevelEdits.Count <= 0 || ForceTileUpdate)
+    private void CleanTiles()
+    {
+        if (activateTileCleaner)
         {
-            //ForceTileUpdate = false;
+            activateTileCleaner = false;
+            forceTileUpdate = true;
+        }
+        else
+            return;
+
+        LevelEdit[] tempEdits = LevelEdits.ToArray();
+
+        for (int i = 0; i < tempEdits.Length; i++)
+        {
+            if (tempEdits[i] == null)
+                continue;
+
+            Collider2D col = tempEdits[i].ReturnOtherColider();
+            if (col != null)
+            {
+                DestroyImmediate(col.gameObject);
+            }
+        }
+    }
+    private void UpdateTiles()
+    {
+        if (LevelEdits.Count <= 0 || forceTileUpdate)
+        {
+            forceTileUpdate = false;
             GameObject[] tempObjs = GameObject.FindGameObjectsWithTag("Ground");
             LevelEdits = new List<LevelEdit>();
 
@@ -37,6 +61,11 @@ public class LevelEditMaster : MonoBehaviour
                 }
             }
         }
+
+        
+    }
+    private void RemoveNullTiles()
+    {
         List<LevelEdit> removeEdits = new List<LevelEdit>();
         foreach (LevelEdit item in LevelEdits)
         {
@@ -45,29 +74,49 @@ public class LevelEditMaster : MonoBehaviour
                 removeEdits.Add(item);
             }
         }
-        LevelEdit[] tempedits = removeEdits.ToArray();
-        for (int i = 0; i < tempedits.Length; i++)
+
+        LevelEdit[] tempEdits = removeEdits.ToArray();
+        for (int i = 0; i < tempEdits.Length; i++)
         {
-            DestroyImmediate(tempedits[i]);
+            DestroyImmediate(tempEdits[i]);
         }
     }
-
-    private void CleanTiles()
+    private void EnableAllColiders()
     {
-        List<Collider2D> collidersToRemove = new List<Collider2D>();
-        foreach (LevelEdit tile in LevelEdits)
+        if (!enableAllColiders)
         {
-            
-            Collider2D col = tile.ReturnOtherColider();
-            if (col != null)
-            {
-                collidersToRemove.Add(col);
-            }
+            return;
         }
-        Collider2D[] Cols = collidersToRemove.ToArray();
-        for (int i = 0; i < Cols.Length; i++)
+        else
         {
-            DestroyImmediate(Cols[i].gameObject);
+            enableAllColiders = false;
         }
+
+        foreach (LevelEdit item in LevelEdits)
+        {
+            item.CurrentCollider.enabled = true;
+        }
+    }
+    private void UpdateColliders()
+    {
+        if (!updateCollidersToUse)
+        {
+            return;
+        }
+        else
+        {
+            updateCollidersToUse = false;
+        }
+        foreach (LevelEdit item in LevelEdits)
+        {
+            item.UpdateColliderCheck();
+        }
+        foreach (LevelEdit item in LevelEdits)
+        {
+            item.CurrentCollider.enabled = !item.UseCollider;
+        }
+
     }
 }
+
+
