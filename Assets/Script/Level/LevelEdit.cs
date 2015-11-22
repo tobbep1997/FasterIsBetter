@@ -127,5 +127,17 @@ public class LevelEdit : MonoBehaviour {
         }
         return null;
     }
- 
+
+    public void CheckIfTileInDir(float rad)
+    {
+        Ray2D ray;
+        RaycastHit2D[] hits;      
+
+        ray = new Ray2D(_CurrentCollider.bounds.center, new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)));
+        hits = Physics2D.RaycastAll(_CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude) / 2);
+
+        Debug.DrawRay(ray.origin, ray.direction * Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude) / 2);
+    }
+
 }
+

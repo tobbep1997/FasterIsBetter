@@ -118,5 +118,13 @@ public class LevelEditMaster : MonoBehaviour
 
     }
 }
+public class ColliderOnTiles
+{
+    public LevelEdit[] Edits;
+    public Collider2D Colliders;
+
+
+
+}
 
 
