@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Threading;
 
 [ExecuteInEditMode]
 public class LevelEditMaster : MonoBehaviour
 {
     [SerializeField]
     private List<LevelEdit> LevelEdits;
+    [SerializeField]
+    private ColliderOnTiles[] CollidersOnTiles;
 
     [SerializeField]
     private bool activateTileCleaner, forceTileUpdate, enableAllColiders, updateCollidersToUse;
@@ -117,14 +119,25 @@ public class LevelEditMaster : MonoBehaviour
         }
 
     }
+
+    private void GetNewColliders()
+    {
+        LevelEdit[] edits = LevelEdits.ToArray();
+        LevelEdit Current, Target, Base;
+        
+
+        for (int i = 0; i < edits.Length; i++)
+        {
+            
+        }
+    }
+
 }
+[System.Serializable]
 public class ColliderOnTiles
 {
     public LevelEdit[] Edits;
     public Collider2D Colliders;
-
-
-
 }
 
 
