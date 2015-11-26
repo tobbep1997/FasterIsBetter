@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [ExecuteInEditMode]//This makes sure that the script is always running
 [System.Serializable]
@@ -9,7 +10,6 @@ public class LevelEdit : MonoBehaviour {
     /// </summary>
 	public Vector2 vCell_size;                      //this is the size of the tile that this script is on
 	//public Vector2 vCell_Offset;
-
 	private Vector2 vCurrentPos,vPreviousPos;       //This is the current and the previous position of the tile
 
     [SerializeField]
@@ -128,23 +128,67 @@ public class LevelEdit : MonoBehaviour {
         return null;
     }
 
-    public bool CheckIfTileInDir(float rad)
+    public LevelEdit CheckIfTileInDir(float rad)
     {
         Ray2D ray;
         RaycastHit2D[] hits;      
 
         ray = new Ray2D(_CurrentCollider.bounds.center, new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)));
-        hits = Physics2D.RaycastAll(_CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude) / 2);
+        hits = Physics2D.RaycastAll(_CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude));
 
+       
         for (int x = 0; x < hits.Length; x++)
         {
             if (hits[x].transform.gameObject != gameObject && !hits[x].collider.isTrigger)
             {
-                return true;
+                return hits[x].transform.gameObject.GetComponent<LevelEdit>();
             }
         }
-        return false;
+        return null;
 
+    }
+    public LevelEdit[] GetAllEditsInDir(float rad, LevelEdit[] UsedEdits)
+    {
+        LevelEdit Current;
+        List<LevelEdit> Edits = new List<LevelEdit>();
+
+        if (UsedEdits.AnyInstanceIsEqual<LevelEdit>(this))
+        {
+            return null;
+        }
+
+        Current = this;
+        
+        do
+        {            
+            Current = Current.CheckIfTileInDir(rad);
+
+            if (Current != null && !UsedEdits.AnyInstanceIsEqual<LevelEdit>(Current))
+            {
+                Edits.Add(Current);
+            }
+        }   while (Current != null);
+
+        Current = this;
+        do
+        {
+            Current = Current.CheckIfTileInDir(rad + Mathf.PI);
+
+            if (Current != null && !UsedEdits.AnyInstanceIsEqual<LevelEdit>(Current))
+            {
+                Edits.Add(Current);
+            }
+        }   while (Current != null);
+
+        if (Edits.Count > 0)
+        {
+            Edits.Add(this);
+            return Edits.ToArray();
+        }
+        else
+            return null;
+
+        
     }
 
 }
