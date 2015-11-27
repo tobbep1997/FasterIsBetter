@@ -30,9 +30,11 @@ public class LevelEdit : MonoBehaviour {
         _CurrentCollider = GetComponent<Collider2D>();
         
     }
-	void Update ()
+	void Update ()  
     {
         SetPosition();
+
+        UpdateColliderCheck();
 
         if (_CurrentCollider == null)
         {
@@ -88,7 +90,7 @@ public class LevelEdit : MonoBehaviour {
             }
             if (!IntersectOtherObject)
             {
-                Debug.DrawRay(_CurrentCollider.bounds.center, ray.direction * Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude), Color.green);
+                //Debug.DrawRay(_CurrentCollider.bounds.center, ray.direction * Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude), Color.green);
                 return false;
             }
         }
@@ -102,7 +104,7 @@ public class LevelEdit : MonoBehaviour {
         {
             ray = new Ray2D(_CurrentCollider.bounds.center, new Vector2(Mathf.Cos(i), Mathf.Sin(i)));
             hits = Physics2D.RaycastAll(_CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude) / 2);
-            Debug.DrawRay(ray.origin, ray.direction * Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude) / 2);
+            //Debug.DrawRay(ray.origin, ray.direction * Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude) / 2);
         }
         for (float i = 0; i <= Mathf.PI * 2; i += Mathf.PI / 2)
         {
@@ -136,10 +138,11 @@ public class LevelEdit : MonoBehaviour {
         ray = new Ray2D(_CurrentCollider.bounds.center, new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)));
         hits = Physics2D.RaycastAll(_CurrentCollider.bounds.center, ray.direction, Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude));
 
+        //Debug.DrawRay(ray.origin, ray.direction * Mathf.Sqrt(_CurrentCollider.bounds.extents.sqrMagnitude));
        
         for (int x = 0; x < hits.Length; x++)
         {
-            if (hits[x].transform.gameObject != gameObject && !hits[x].collider.isTrigger)
+            if (hits[x].transform.gameObject != gameObject && !hits[x].collider.isTrigger && hits[x].collider.enabled)
             {
                 return hits[x].transform.gameObject.GetComponent<LevelEdit>();
             }
@@ -170,6 +173,7 @@ public class LevelEdit : MonoBehaviour {
         }   while (Current != null);
 
         Current = this;
+
         do
         {
             Current = Current.CheckIfTileInDir(rad + Mathf.PI);
@@ -190,6 +194,5 @@ public class LevelEdit : MonoBehaviour {
 
         
     }
-
 }
 
