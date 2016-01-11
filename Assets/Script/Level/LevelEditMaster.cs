@@ -15,38 +15,52 @@ public class LevelEditMaster : MonoBehaviour
     private GameObject ColliderGameobject;
 
     [SerializeField]
-    private bool Start, DrawColliderLines;
+    private bool Start, Revers, DrawColliderLines;
     [SerializeField]
-    private bool activateTileCleaner, forceTileUpdate, enableAllColiders, updateCollidersToUse, getNewColliders, CreateNewCollider;
+    AdminControlls adminControlls;
+    //private bool activateTileCleaner, forceTileUpdate, enableAllColiders, RemoveColliders, getNewColliders, CreateNewCollider;
 
     private void Update()
     {
         if (Start)
         {
-            activateTileCleaner = true;
-            forceTileUpdate = true;
-            enableAllColiders = true;
-            updateCollidersToUse = true;
-            getNewColliders = true;
-            CreateNewCollider = true;
+            if (ColliderGameobject == null)
+            {
+                Debug.LogError("The ColliderGameobject is null. Can not proceed with tile cleaning");                
+                Start = false;
+                return;
+            }
             Start = false;
+
+            adminControlls.forceTileUpdate = true;
+            adminControlls.getNewColliders = true;
+            adminControlls.RemoveColliders = true;
+            adminControlls.enableAllColiders = true;
+            adminControlls.CreateNewCollider = true;
+            adminControlls.activateTileCleaner = true;
         }
+        ReversSettings();
 
         UpdateTiles();
-        CleanTiles();        
         EnableAllColiders();
+        CleanTiles();        
+
+
         UpdateColliders();
         GetNewColliders();
-        DrawColliderLine();
         CreateNewColliders();
+
+        DrawColliderLine();
+
+        RemoveNullTiles();
     }
+
 
     private void CleanTiles()
     {
-        if (activateTileCleaner)
+        if (adminControlls.activateTileCleaner)
         {
-            activateTileCleaner = false;
-            forceTileUpdate = true;
+            adminControlls.activateTileCleaner = false;
         }
         else
             return;
@@ -67,9 +81,9 @@ public class LevelEditMaster : MonoBehaviour
     }
     private void UpdateTiles()
     {
-        if (LevelEdits.Count <= 0 || forceTileUpdate)
+        if (LevelEdits.Count <= 0 || adminControlls.forceTileUpdate)
         {
-            forceTileUpdate = false;
+            adminControlls.forceTileUpdate = false;
             GameObject[] tempObjs = GameObject.FindGameObjectsWithTag("Ground");
             LevelEdits = new List<LevelEdit>();
 
@@ -85,6 +99,7 @@ public class LevelEditMaster : MonoBehaviour
 
         
     }
+   
     private void RemoveNullTiles()
     {
         List<LevelEdit> removeEdits = new List<LevelEdit>();
@@ -104,13 +119,13 @@ public class LevelEditMaster : MonoBehaviour
     }
     private void EnableAllColiders()
     {
-        if (!enableAllColiders)
+        if (!adminControlls.enableAllColiders)
         {
             return;
         }
         else
         {
-            enableAllColiders = false;
+            adminControlls.enableAllColiders = false;
         }
 
         foreach (LevelEdit item in LevelEdits)
@@ -120,36 +135,32 @@ public class LevelEditMaster : MonoBehaviour
     }
     private void UpdateColliders()
     {
-        if (!updateCollidersToUse)
+        if (!adminControlls.RemoveColliders)
         {
             return;
         }
         else
         {
-            updateCollidersToUse = false;
-        }
-        foreach (LevelEdit item in LevelEdits)
-        {
-            item.UpdateColliderCheck();
+            adminControlls.RemoveColliders = false;
         }
         foreach (LevelEdit item in LevelEdits)
         {
             item.CurrentCollider.enabled = !item.UseCollider;
         }
-
     }
 
     private void GetNewColliders()
     {
-        if (getNewColliders)
+        if (adminControlls.getNewColliders)
         {
-            getNewColliders = false;
+            adminControlls.getNewColliders = false;
         }
         else
             return;
 
         LevelEdit[] edits = LevelEdits.ToArray();
         List<LevelEdit> UsedEdits = new List<LevelEdit>();
+        CollidersOnTiles = new List<ColliderOnTiles>();
 
         for (int i = 0; i < edits.Length; i++)
         {
@@ -206,18 +217,37 @@ public class LevelEditMaster : MonoBehaviour
     }
     private void CreateNewColliders()
     {
-        if (!CreateNewCollider)
+        if (!adminControlls.CreateNewCollider)
         {
             return;
         }
         else
-            CreateNewCollider = false;
+            adminControlls.CreateNewCollider = false;
 
         foreach (var item in CollidersOnTiles)
         {
             item.CreateNewColliders(ColliderGameobject);
             item.RemoveOriginalColliders();
         }
+    }
+
+    private void ReversSettings()
+    {
+        if (Revers)
+        {
+            Revers = false;
+        }
+        else
+            return;
+
+        Collider2D[] cols = ColliderGameobject.GetComponents<Collider2D>();
+
+        for (int i = 0; i < cols.Length; i++)
+        {
+            DestroyImmediate(cols[i]);
+        }
+
+        adminControlls.enableAllColiders = true;
     }
 
 }
@@ -338,6 +368,11 @@ public class ColliderOnTiles
         }
     }
 
+}
+[System.Serializable]
+public class AdminControlls
+{    
+    public bool activateTileCleaner, forceTileUpdate, enableAllColiders, RemoveColliders, getNewColliders, CreateNewCollider;
 }
 
 
