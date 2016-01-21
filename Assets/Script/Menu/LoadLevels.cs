@@ -52,7 +52,7 @@ public class LoadLevels : MonoBehaviour {
                 {
                     Instantiate(audioManager);
                     TimeScale.ResetValues(false);
-                    Application.LoadLevel(mapLevels[i].BuildIndexStart + y);
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(mapLevels[i].BuildIndexStart + y);
                 }
             }
         }

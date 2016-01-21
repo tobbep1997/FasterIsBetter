@@ -72,12 +72,12 @@ public class UIBehavior : MonoBehaviour {
 		TimeScale.ResetValues(true);
 		TimeScale.StopTime(false);
 		TimeScale.playing = true;
-		Application.LoadLevel(Application.loadedLevel);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
 	}
     //this is the player wants to load the main menu
 	public void LoadMainMenu()
 	{
-		Application.LoadLevel("Main_Menu");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main_Menu");
 	}
 
 

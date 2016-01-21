@@ -17,7 +17,7 @@ public class Score : MonoBehaviour
     public static void FinishLevel(float TimeLeft)
     {
         LevelScore = (int)TimeLeft * ScoreMult;
-        HighScore = PlayerPrefs.GetInt(Application.loadedLevel.ToString() + "HighScore");
+        HighScore = PlayerPrefs.GetInt(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex.ToString() + "HighScore");
         if (LevelScore > HighScore)
         {
             HighScore = LevelScore;
@@ -27,7 +27,7 @@ public class Score : MonoBehaviour
     public static void DobuleScore()
     {
         LevelScore *= 2;
-        HighScore = PlayerPrefs.GetInt(Application.loadedLevel.ToString() + "HighScore");
+        HighScore = PlayerPrefs.GetInt(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex.ToString() + "HighScore");
         if (LevelScore > HighScore)
         {
             HighScore = LevelScore;
@@ -36,7 +36,7 @@ public class Score : MonoBehaviour
     }
     private static void SaveScoreValues()
     {
-        PlayerPrefs.SetInt(Application.loadedLevel.ToString() + "HighScore", HighScore);
+        PlayerPrefs.SetInt(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex.ToString() + "HighScore", HighScore);
         PlayerPrefs.Save();
     }
     public void ResetScore()
@@ -52,6 +52,6 @@ public class Score : MonoBehaviour
             return;
         }
         ScoreText.text = LevelScore.ToString();
-        TotalScoreText.text = PlayerPrefs.GetInt(Application.loadedLevel.ToString() + "HighScore").ToString();
+        TotalScoreText.text = PlayerPrefs.GetInt(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex.ToString() + "HighScore").ToString();
     }
 }

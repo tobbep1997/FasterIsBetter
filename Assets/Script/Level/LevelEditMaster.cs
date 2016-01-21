@@ -309,7 +309,7 @@ public class ColliderOnTiles
 
         sum /= Edits.Length;
         Ray2D ray;
-        RaycastHit2D[] hits;
+        //RaycastHit2D[] hits;
         for (int i = 0; i < Edits.Length; i++)
         for (float x = 0; x <= Mathf.PI * 2; x += Mathf.PI / 2)
         {

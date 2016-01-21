@@ -38,7 +38,7 @@ public class GameSettings : MonoBehaviour {
     {
         QuitMenu();
         TimeScale.ResetValues(true);
-        Application.LoadLevel("Main_Menu");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main_Menu");
     }
 
 

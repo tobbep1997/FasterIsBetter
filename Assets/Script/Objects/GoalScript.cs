@@ -40,13 +40,13 @@ public class GoalScript : MonoBehaviour {
 
 	void Start()
 	{
-		CurrentLevel = Application.loadedLevel;
-	}
+        CurrentLevel = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+    }
 	void OnTriggerEnter2D(Collider2D other)//check if the object trigger interact with the player
 	{
 		if (other.tag == "Player" && !Wonned) {
 			if (LoadMenu) {
-				Application.LoadLevel("Main_menu");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Main_menu");
 			}
 			else
 			{

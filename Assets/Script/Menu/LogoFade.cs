@@ -22,7 +22,7 @@ public class LogoFade : MonoBehaviour {
 		spriteRenderer.color = new Color(1, 1, 1, 1 - logoFadeInTimer / logoFadeInDelay);
 
 		if (introTimer > introTimerLimit)
-			Application.LoadLevel ("Main_Menu");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Main_Menu");
 	
 	}
 }

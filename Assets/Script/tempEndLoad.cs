@@ -13,6 +13,6 @@ public class tempEndLoad : MonoBehaviour {
 	}
 	public void LoadMenu()
 	{
-		Application.LoadLevel ("Main_menu");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main_menu");
 	}
 }

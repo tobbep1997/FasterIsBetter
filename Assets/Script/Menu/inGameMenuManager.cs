@@ -119,6 +119,6 @@ public class inGameMenuManager : MonoBehaviour {
 	}
 	public void inGameExitButtonQuitMainMenu()
 	{
-		Application.LoadLevel("Main_menu");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main_menu");
 	}
 }

@@ -16,8 +16,8 @@ public class SaveGame : MonoBehaviour {
 
 	void Start () {
         
-		if (PlayerPrefs.GetInt("GameSave1") < Application.loadedLevel) 
-			PlayerPrefs.SetInt ("GameSave1", Application.loadedLevel);		
+		if (PlayerPrefs.GetInt("GameSave1") < UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex) 
+			PlayerPrefs.SetInt ("GameSave1", UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);		
 		PlayerPrefs.Save ();        
 	}
     void Update()

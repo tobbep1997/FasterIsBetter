@@ -7,6 +7,6 @@ public class restartButton : MonoBehaviour {
 	public void Restart ()
 	{
 		TimeScale.ResetValues(true);
-		Application.LoadLevel(Application.loadedLevel);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
 	}
 }

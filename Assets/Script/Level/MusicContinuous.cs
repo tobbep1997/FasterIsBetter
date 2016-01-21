@@ -14,7 +14,7 @@ public class MusicContinuous : MonoBehaviour {
 
 	public void destroyInMenu()
 	{
-		if(Application.loadedLevel == 1)
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 1)
 			Destroy (gameObject);
 	}
 }
