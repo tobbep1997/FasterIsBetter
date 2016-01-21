@@ -15,7 +15,8 @@ public class DeveloperStuff : MonoBehaviour {
 			//Instantiate(particle,transform.position,Quaternion.identity);
 			TimeScale.timeTicking = false;
 			//Wonned = true;
-			Application.LoadLevel(Application.loadedLevel + 1);
+			//.LoadLevel(Application.loadedLevel + 1);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1);
 			TimeScale.timeTicking = true;
 		}
 	}

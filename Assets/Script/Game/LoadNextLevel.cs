@@ -9,7 +9,7 @@ public class LoadNextLevel : MonoBehaviour {
         TimeScale.StopTime(false);
         TimeScale.playing = true;
         TimeScale.timeTicking = true;
-        Application.LoadLevel(Application.loadedLevel + 1);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1);
 
     }
     public void RestartLevel()
@@ -17,7 +17,7 @@ public class LoadNextLevel : MonoBehaviour {
         TimeScale.ResetValues(true);
         TimeScale.StopTime(false);
         TimeScale.playing = true;
-        Application.LoadLevel(Application.loadedLevel);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 
 }

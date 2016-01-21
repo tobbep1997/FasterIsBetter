@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class menuManagerScript : MonoBehaviour {
@@ -26,42 +27,32 @@ public class menuManagerScript : MonoBehaviour {
 	{
         //clicking L will load to where the player was at its latest level
         if (Input.GetKeyDown (KeyCode.L)) {
-			for (int i = 0; i < PlayerPrefs.GetInt("GameSave1"); i++) {
-			Application.LoadLevel(i);
-			}
-			Application.LoadLevel(PlayerPrefs.GetInt("GameSave1"));
-		}
+            //for (int i = 0; i < PlayerPrefs.GetInt("GameSave1"); i++) {
+            //Application.LoadLevel(i);
+            //}
+            //Application.LoadLevel(PlayerPrefs.GetInt("GameSave1"));
+            SceneManager.LoadScene(PlayerPrefs.GetInt("GameSave1"));
+        }
 
     }
     public void Load_Latest_Level()
 	{
-		Application.LoadLevel(PlayerPrefs.GetInt("GameSave1"));
-	}
+		//Application.LoadLevel(PlayerPrefs.GetInt("GameSave1"));
+        SceneManager.LoadScene(PlayerPrefs.GetInt("GameSave1"));
+
+    }
 	public void exit_Button()
 	{
-        if (Application.platform != RuntimePlatform.WindowsEditor)
-            System.Diagnostics.Process.GetCurrentProcess().Kill();
+        //if (Application.platform != RuntimePlatform.WindowsEditor)
+            //System.Diagnostics.Process.GetCurrentProcess().Kill();
 		Application.Quit();
 	}
 	public void levelOneButton()
 	{
 		Instantiate (audioManager);
 		TimeScale.ResetValues(false);
-		Application.LoadLevel("TutorialLevel");
-	}
-    public void LoadLatestLevel()
-    {
-        Instantiate(audioManager);
-        TimeScale.ResetValues(false);
-        if (PlayerPrefs.GetInt("GameSave1") < 3)
-        {
-            if (Application.platform != RuntimePlatform.WindowsEditor)
-                Application.LoadLevel(2);
-            else
-                Application.LoadLevel(3);
-        }
-        else
-            Application.LoadLevel(PlayerPrefs.GetInt("GameSave1"));
+		//Application.LoadLevel("TutorialLevel");
+        SceneManager.LoadScene("TutorialLevel");
     }
 	public void options_Button()
 	{
@@ -96,4 +87,18 @@ public class menuManagerScript : MonoBehaviour {
 		levelSelectPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
 		levelSelectPanel.GetComponent<CanvasGroup>().interactable = true;
 	}
+    //public void LoadLatestLevel()
+    //{
+    //    Instantiate(audioManager);
+    //    TimeScale.ResetValues(false);
+    //    if (PlayerPrefs.GetInt("GameSave1") < 3)
+    //    {
+    //        if (Application.platform != RuntimePlatform.WindowsEditor)
+    //            Application.LoadLevel(2);
+    //        else
+    //            Application.LoadLevel(3);
+    //    }
+    //    else
+    //        Application.LoadLevel(PlayerPrefs.GetInt("GameSave1"));
+    //}
 }
