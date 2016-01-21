@@ -6,6 +6,11 @@ public class CharacterController : MonoBehaviour
     /// <summary>
     /// CharacterController makes sure that the player can move and jump
     /// </summary>
+    
+    //TODO: Add fucntions to take inputs
+    //TODO: Make sure that the movment apply is made in a own fucntion
+    //TODO: Make buttons that dont use the UNITY standard buttons and just check if the touch is inside the rectangle and apply the movment to the character
+    
     public float moveSpeed, jumpHight;
     public float StartTime, StopTime;        //This is the times that it take for the character is at max speed or has stoped
 
@@ -361,6 +366,4 @@ public class CharacterController : MonoBehaviour
         }
         return false;
     }
-
-
 }
