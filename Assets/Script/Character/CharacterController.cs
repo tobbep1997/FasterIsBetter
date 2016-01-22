@@ -55,11 +55,27 @@ public class CharacterController : MonoBehaviour
     //-------------------------------   Unity Base Functions
     void Start()
     {
+
         if (Application.platform != RuntimePlatform.WindowsEditor)
-            currentInputMethod = CurrentInputMethod.touchButtons;
+        {
+            switch (PlayerPrefs.GetInt("Controller_Type"))
+            {
+                case 0:
+                    currentInputMethod = CurrentInputMethod.touch;
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                    currentInputMethod = CurrentInputMethod.touchButtons;
+                    break;
+                default:
+                    break;
+            }
+        }
         else
             currentInputMethod = CurrentInputMethod.keybord;
-            body2D = GetComponent<Rigidbody2D>();
+
+        body2D = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         fPreviousYPos = transform.position.y;
 
