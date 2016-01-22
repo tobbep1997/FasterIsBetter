@@ -15,7 +15,7 @@ public class LevelEditMaster : MonoBehaviour
     private GameObject ColliderGameobject;
 
     [SerializeField]
-    private bool Start, Revers, DrawColliderLines;
+    private bool Start, Revers;
     [SerializeField]
     AdminControlls adminControlls;
     //private bool activateTileCleaner, forceTileUpdate, enableAllColiders, RemoveColliders, getNewColliders, CreateNewCollider;
@@ -205,10 +205,6 @@ public class LevelEditMaster : MonoBehaviour
     }
     private void DrawColliderLine()
     {
-        if (!DrawColliderLines)
-        {
-            return;
-        }
         foreach (var levelEdit in CollidersOnTiles)
         {
             levelEdit.DrawColliderLines(ColliderOnTiles.Angel.Vertical);

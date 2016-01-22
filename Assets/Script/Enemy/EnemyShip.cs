@@ -44,7 +44,7 @@ public class EnemyShip : MonoBehaviour {
 
 	void AttackShip()
 	{
-		GameObject temp = (GameObject)Instantiate(bulletHit,bulletSpawn.position,Quaternion.identity);
+		//GameObject temp = (GameObject)Instantiate(bulletHit,bulletSpawn.position,Quaternion.identity);
 		DamageShip ();
 	}
 	void OnTriggerEnter2D(Collider2D other)

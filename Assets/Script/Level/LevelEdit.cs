@@ -32,6 +32,12 @@ public class LevelEdit : MonoBehaviour {
     }
 	void Update ()  
     {
+
+        if (Application.isEditor)
+        {
+            return;
+        }
+
         SetPosition();
 
         UpdateColliderCheck();

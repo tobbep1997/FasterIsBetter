@@ -41,6 +41,7 @@ public class Score : MonoBehaviour
     }
     public void ResetScore()
     {
+        print("Score Has been resettedded");
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
     }

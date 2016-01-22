@@ -13,11 +13,11 @@ public class ShowLevelName : MonoBehaviour {
 	public Text displayText;
 
 	public Color ChangeToColor;
-	private Color StartColor;
+	//private Color StartColor;
 
 	void Start () {
 		startTime = fadeTime;
-		StartColor = displayText.color;
+		//StartColor = displayText.color;
 		rectTransform = GetComponent<RectTransform> ();
 
 	}

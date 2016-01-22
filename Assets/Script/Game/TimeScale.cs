@@ -31,8 +31,8 @@ public class TimeScale : MonoBehaviour {
 	private static float PreviousUpdateTickTime;
 
 	public static bool playing = true;//This script only update if this is true and sould only be accsese trough the StopTime(bool) fucntion
-	private static bool WasPaused = false;
-	private static bool isThereValues = false;
+	//private static bool WasPaused = false;
+	//private static bool isThereValues = false;
 
     private static float refValue;
 

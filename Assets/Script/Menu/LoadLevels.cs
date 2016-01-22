@@ -11,8 +11,17 @@ public class LoadLevels : MonoBehaviour {
     [SerializeField]
     private GameObject audioManager;
 
-    private void Update()
+
+    private void Start()
     {
+        for (int i = 0; i < mapLevels.Length; i++)
+        {
+            for (int y = 0; y < mapLevels[i].LevelButtons.Length; y++)
+            {
+                mapLevels[i].LevelButtons[y].GetComponentInChildren<Text>().text = "Level " + (y + 1).ToString();
+            }
+        }
+
         for (int i = 0; i < mapLevels.Length; i++)
         {
             for (int y = 0; y < mapLevels[i].LevelButtons.Length; y++)
@@ -28,16 +37,6 @@ public class LoadLevels : MonoBehaviour {
                 }   
                 else
                     mapLevels[i].LevelButtons[y].interactable = false;
-            }
-        }
-    }
-    private void Start()
-    {
-        for (int i = 0; i < mapLevels.Length; i++)
-        {
-            for (int y = 0; y < mapLevels[i].LevelButtons.Length; y++)
-            {
-                mapLevels[i].LevelButtons[y].GetComponentInChildren<Text>().text = "Level " + (y + 1).ToString();
             }
         }
     }

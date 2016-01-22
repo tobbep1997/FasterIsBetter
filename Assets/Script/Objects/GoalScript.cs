@@ -4,8 +4,7 @@ using System.Collections;
 /// This is the called when the player interact with the goal clock
 /// </summary>
 public class GoalScript : MonoBehaviour {
-
-	int CurrentLevel;//Gets the currentLevel
+	
 	bool Wonned = false;//is true if the player won
 
 	float timerBeforeEnd = 1.5f;//time between getting to the goal and loadning the next level
@@ -38,10 +37,6 @@ public class GoalScript : MonoBehaviour {
 		}
 	}
 
-	void Start()
-	{
-        CurrentLevel = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
-    }
 	void OnTriggerEnter2D(Collider2D other)//check if the object trigger interact with the player
 	{
 		if (other.tag == "Player" && !Wonned) {

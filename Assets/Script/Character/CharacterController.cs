@@ -48,22 +48,24 @@ public class CharacterController : MonoBehaviour
     private float fPreviousYPos;            //its the character position on the Y-axis the previous game tick
 
 
-    private bool IsTouch = true;
+    //private bool IsTouch = true;
+    private enum CurrentInputMethod{ keybord, touch, touchButtons }
+    private CurrentInputMethod currentInputMethod = CurrentInputMethod.touchButtons;
 
-
+    //-------------------------------   Unity Base Functions
     void Start()
     {
         if (Application.platform != RuntimePlatform.WindowsEditor)
-            IsTouch = true;
+            currentInputMethod = CurrentInputMethod.touchButtons;
         else
-            IsTouch = false;
+            currentInputMethod = CurrentInputMethod.keybord;
             body2D = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         fPreviousYPos = transform.position.y;
 
         soundController = GetComponent<CharacterSoundController>();
     }
-    void Update()                           //The reson i use Update instead of fixedupdate is that FixedUpdate is effected by TimeScale
+    void Update()                                   //The reson i use Update instead of fixedupdate is that FixedUpdate is effected by TimeScale
     {
         if (TimeScale.playing == false || TimeScale.timeTicking == false)
         {
@@ -71,94 +73,49 @@ public class CharacterController : MonoBehaviour
         }
         //Here i call all the functions that are needed for the character to move and jump
         Jump();
-        if (IsTouch)
-            TouchMoveHorizontal();
-        else
-            MoveHorizontal();
-    }
 
-    void MoveLeft()
+        switch (currentInputMethod)
+        {
+            case CurrentInputMethod.keybord:
+                MoveHorizontal();
+                break;
+            case CurrentInputMethod.touch:
+                TouchMoveHorizontal();
+                break;
+            default:
+                break;
+        }
+
+        ApplyMovment();
+    }
+    //-------------------------------   Set The Character Direction
+    public void MoveLeft()
     {
         dir = -1;
-    }
-    void MoveRight()
+    }                       //Set CharacterDirection
+    public void MoveRight()
     {
         dir = 1;
-    }
-    void ResetDirection()
+    }                      //Set CharacterDirection
+    public void JumpInput()
+    {
+        PlayerJump();
+    }                      //jump
+    //-------------------------------   Reset
+    private void ResetDirection()
     {
         dir = 0;
     }
-    void MoveHorizontal()                   //This makes sure that the player can move the character in the horizontal directions
+    //-------------------------------   Inputs
+    private void MoveHorizontal()                   //This makes sure that the player can move the character in the horizontal directions
     {
         dir = Input.GetAxisRaw("Horizontal");
         if (Input.GetKeyDown(KeyCode.Space))
             PlayerJump();
         if (Input.GetKeyDown(KeyCode.Z))
-            EventManager.CallPlayerInteract();
-
-        //This check if the player can and is trying to move then it check what direction its going
-        if (canMove)
-            if (dir != 0)
-            {
-                TimeMoved += Time.deltaTime * Time.timeScale;
-                currentDir = dir;
-            }
-            else
-                TimeMoved -= Time.deltaTime * Time.timeScale;
-
-        //Check if the player trys to walk but the character cant move and makes sure that the character aint picking up speed
-        if (TimeMoved >= TimeOffset)
-        {
-            if (dir != 0)
-            {
-                if (CharacterMoved(LastPos, body2D.position, DistanceOffset))
-                {
-                    canMove = false;
-                    TimeMoved = 0;
-                }
-                else
-                    canMove = true;
-            }
-            else
-                canMove = true;
-        }
-        else
-            canMove = true;
-
-        //Checks if the player turns
-        if (dir != ChangeDir && dir != 0)
-            TimeMoved = 0;
-        //Bonderis
-        if (TimeMoved >= StartTime)
-            TimeMoved = StartTime;
-        if (TimeMoved <= 0)
-            TimeMoved = 0;
-        if (TimeMoved == 0)
-            currentDir = 0;
-        //Check if the player stops moving and slows the character down
-        if (dir == 0 && TimeMoved > StopTime)
-            TimeMoved = StopTime;
-        //This gives a % value of the speed
-        float AccMoveMult = TimeMoved / StartTime;
-        //this makes sure that the character is moving
-        TurnCharacter();
-        //This updates the animations so the character is playing the right animation at the right time
-        UpdateAnimation(dir, fPreviousYPos);
-
-        if (currentDir > 0)
-            body2D.position += Vector2.right * moveSpeed * AccMoveMult * TimeScale.DeltaTime;
-        else if (currentDir < 0)
-            body2D.position -= Vector2.right * moveSpeed * AccMoveMult * TimeScale.DeltaTime;
-
-
-
-        //Some previousFram Values beeing set
-        fPreviousYPos = transform.position.y;
-        ChangeDir = dir;
-        LastPos = body2D.position;
+            EventManager.CallPlayerInteract();        
     }
-    void TouchMoveHorizontal()
+    private void TouchMoveHorizontal()              //This takes the touch inputs
     {
         if (Input.touchCount > 0)
         {
@@ -198,8 +155,10 @@ public class CharacterController : MonoBehaviour
         }
         else
             ResetDirection();
-
-        //This check if the player can and is trying to move then it check what direction its going
+    }
+    //-------------------------------   Apply movment
+    private void ApplyMovment()                     //This applys the movement to the character 
+    {
         if (canMove)
             if (dir != 0)
             {
@@ -258,7 +217,7 @@ public class CharacterController : MonoBehaviour
         ChangeDir = dir;
         LastPos = body2D.position;
     }
-    void TurnCharacter()//This turns the character so the character cant run backwards
+    private void TurnCharacter()                    //This turns the character so the character cant run backwards
     {
         if (currentDir > 0)
         {
@@ -269,6 +228,7 @@ public class CharacterController : MonoBehaviour
             transform.localScale = new Vector3(-1, 1, 1);
         }
     }
+    //-------------------------------   Jump
     private void Jump()//Allows the character to jump
     {
         //Checks if the character is curently jumping
@@ -295,7 +255,7 @@ public class CharacterController : MonoBehaviour
             }
         }
     }
-    public void PlayerJump()
+    private void PlayerJump()
     {
         if (canJump && isJumping == false && rayJump == false)
         {
@@ -304,6 +264,7 @@ public class CharacterController : MonoBehaviour
             canJump = false;
         }
     }
+    //-------------------------------   Animations
     void UpdateAnimation(float dir, float PreviousYPos)//This update all the varibles and parameters to the animator of the character
     {
         //All this values are sent to the animator
@@ -341,6 +302,7 @@ public class CharacterController : MonoBehaviour
             anim.SetBool("Jumping", false);
         }
     }
+    //-------------------------------   Extra fucntions
     private bool CharacterMoved(Vector2 Start, Vector2 End, float Offset)//The return a true if the character has moved
     {
         //this checks if the player is on the at the same possition with in a small offset
@@ -366,4 +328,5 @@ public class CharacterController : MonoBehaviour
         }
         return false;
     }
+    //-------------------------------
 }
