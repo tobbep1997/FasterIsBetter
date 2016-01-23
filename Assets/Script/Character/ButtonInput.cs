@@ -9,7 +9,7 @@ public class ButtonInput : MonoBehaviour {
     private bool UsingButtons;
     [SerializeField]
     private bool _isPressed;
-    private bool IsPressed
+    public bool IsPressed
     {
         get { return _isPressed; }
     } 
@@ -81,6 +81,7 @@ public class ButtonInput : MonoBehaviour {
                 if (ButtonRect.rect.ContainsVector(Input.touches[i].position))
                 {
                     _isPressed = true;
+                    print("pressed");
                     break;
                 }          
                 else
