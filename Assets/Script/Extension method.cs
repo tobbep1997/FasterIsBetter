@@ -14,10 +14,14 @@ public static class Extension_method
     //--------------------------------------    UnityEngien.Rect
     public static bool ContainsVector(this Rect rect, Vector2 vector)
     {
-        if (vector.x >= rect.xMin && vector.x <= rect.xMax)
-            if (vector.y >= rect.yMin && vector.y <= rect.yMax)
+        if (vector.x >= rect.position.x && vector.x <= rect.position.x + rect.width)
+            if (vector.y >= rect.position.y && vector.y <= rect.position.y + rect.height)
                 return true;
         return false;
+    }
+    public static Vector2 ReturnScreenPosition(this Vector2 vector, Camera cam)
+    {
+        return cam.WorldToScreenPoint(vector);        
     }
 }
 

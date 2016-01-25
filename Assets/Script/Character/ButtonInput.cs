@@ -8,6 +8,8 @@ public class ButtonInput : MonoBehaviour {
     private RectTransform ButtonRect;
     private bool UsingButtons;
     [SerializeField]
+    private UIRectangle UIRect;
+    [SerializeField]
     private bool _isPressed;
     public bool IsPressed
     {
@@ -28,42 +30,10 @@ public class ButtonInput : MonoBehaviour {
                 UsingButtons = true;
                 break;
         }
-        //Button.alpha = 0;
-        //Button.blocksRaycasts = false;
-        //Button.interactable = false;
-
-        //Tatical_Button.alpha = 0;
-        //Tatical_Button.blocksRaycasts = false;
-        //Tatical_Button.interactable = false;
-
-        //Inversed_Tatical_Button.alpha = 0;
-        //Inversed_Tatical_Button.blocksRaycasts = false;
-        //Inversed_Tatical_Button.interactable = false;
-
-        //switch (PlayerPrefs.GetInt("Controller_Type"))
-        //{
-        //    case 0:
-        //        UsingButtons = false;
-        //        break;
-        //    case 1:
-        //        UsingButtons = true;
-        //        Button.alpha = 1;
-        //        Button.blocksRaycasts = true;
-        //        Button.interactable = true;
-        //        break;
-        //    case 2:
-        //        UsingButtons = true;
-        //        Button.alpha = 1;
-        //        Button.blocksRaycasts = true;
-        //        Button.interactable = true;
-        //        break;
-        //    case 3:
-        //        UsingButtons = true;
-        //        Button.alpha = 1;
-        //        Button.blocksRaycasts = true;
-        //        Button.interactable = true;
-        //        break;
-        //}
+        Vector2 temp = ButtonRect.rect.position.ReturnScreenPosition(Camera.main);
+        UIRect = new UIRectangle(temp);
+        //UIRect = new UIRectangle(temp, new Vector2(ButtonRect.rect.position.x + ButtonRect.rect.width, ButtonRect.rect.position.y).ReturnScreenPosition(Camera.main).x - temp.x,
+        //                               new Vector2(ButtonRect.rect.position.x, ButtonRect.rect.position.y + ButtonRect.rect.height).ReturnScreenPosition(Camera.main).y - temp.y);     
     }
     private void Update()
     {
@@ -78,15 +48,29 @@ public class ButtonInput : MonoBehaviour {
         {
             for (int i = 0; i < Input.touchCount; i++)
             {
-                if (ButtonRect.rect.ContainsVector(Input.touches[i].position))
+                if (UIRect.ContainsVector(new Vector2(Input.touches[i].position.x, ScreenReverseY(Input.touches[i].position.y))))
                 {
                     _isPressed = true;
-                    print("pressed");
+                    print("pressed " + gameObject.name);
                     break;
                 }          
                 else
                     _isPressed = false;      
             }
         }
+        else
+        {
+            _isPressed = false;
+        }
     }
+    private float ScreenReverseY(float Y)
+    {
+        return Screen.height - Y;
+    }
+    //--------------------------------------------------
+    public string DisplayInformation()
+    {
+        return gameObject.name + " " + UIRect.Position.ToString();
+    }
+
 }

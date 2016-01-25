@@ -35,6 +35,7 @@ public class ButtonController : MonoBehaviour {
             case 2:
                 Tatical_Buttons.Enable(true);
                 controll_Type = controllerType.TactButton;
+                print(Tatical_Buttons.Jump.DisplayInformation());
                 break;
             case 3:
                 Inversed_Tatical_Buttons.Enable(true);
@@ -76,10 +77,15 @@ public class ButtonController : MonoBehaviour {
     }
     private void PrintCurrentTouchPos()
     {
-        for (int i = 0; i < Input.touchCount; i++)
-        {
-            print(Input.touches[i].ToString() + Input.touches[i].position.ToString());
-        }
+        //for (int i = 0; i < Input.touchCount; i++)
+        //{
+        //    print(Input.touches[i].ToString() + new Vector2(Input.touches[i].position.x,ScreenReverseY(Input.touches[i].position.y)).ToString());
+        //}
+        
+    }
+    private float ScreenReverseY(float Y)
+    {
+        return Screen.height - Y;
     }
 }
 
