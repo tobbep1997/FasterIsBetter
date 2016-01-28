@@ -31,7 +31,7 @@ public class ButtonInput : MonoBehaviour {
                 break;
         }
         Vector2 temp = ButtonRect.rect.position.ReturnScreenPosition(Camera.main);
-        UIRect = new UIRectangle(temp);
+        UIRect = new UIRectangle(ButtonRect.position,ButtonRect.rect.width,ButtonRect.rect.height);
         //UIRect = new UIRectangle(temp, new Vector2(ButtonRect.rect.position.x + ButtonRect.rect.width, ButtonRect.rect.position.y).ReturnScreenPosition(Camera.main).x - temp.x,
         //                               new Vector2(ButtonRect.rect.position.x, ButtonRect.rect.position.y + ButtonRect.rect.height).ReturnScreenPosition(Camera.main).y - temp.y);     
     }
@@ -40,6 +40,7 @@ public class ButtonInput : MonoBehaviour {
         if (!UsingButtons)
             return;        
         Check_Touch_Position_Within_ButtonRect();
+        
     }
     //--------------------------------------------------    Button main fuction
     private void Check_Touch_Position_Within_ButtonRect()
@@ -48,7 +49,8 @@ public class ButtonInput : MonoBehaviour {
         {
             for (int i = 0; i < Input.touchCount; i++)
             {
-                if (UIRect.ContainsVector(new Vector2(Input.touches[i].position.x, ScreenReverseY(Input.touches[i].position.y))))
+                //new Vector2(Input.touches[i].position.x, ScreenReverseY(Input.touches[i].position.y))
+                if (UIRect.ContainsVector(Input.touches[i].position))
                 {
                     _isPressed = true;
                     print("pressed " + gameObject.name);
@@ -70,7 +72,7 @@ public class ButtonInput : MonoBehaviour {
     //--------------------------------------------------
     public string DisplayInformation()
     {
-        return gameObject.name + " " + UIRect.Position.ToString();
+        return gameObject.name + " " + ButtonRect.position.ToString();
     }
 
 }

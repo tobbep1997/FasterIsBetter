@@ -14,6 +14,8 @@ public class ButtonController : MonoBehaviour {
     private enum controllerType { Touch, Buttons, TactButton, InverTactButton }
     private controllerType controll_Type;
 
+    private float currentDirrection = 0;
+
     //----------------------------  Unity Standard Fucntions
     void Start()
     {
@@ -36,6 +38,8 @@ public class ButtonController : MonoBehaviour {
                 Tatical_Buttons.Enable(true);
                 controll_Type = controllerType.TactButton;
                 print(Tatical_Buttons.Jump.DisplayInformation());
+                print(Tatical_Buttons.Left.DisplayInformation());
+                print(Tatical_Buttons.Right.DisplayInformation());
                 break;
             case 3:
                 Inversed_Tatical_Buttons.Enable(true);
@@ -62,6 +66,10 @@ public class ButtonController : MonoBehaviour {
 
     private void CheckButtons(ButtonInput left, ButtonInput right, ButtonInput jump)
     {
+        if (jump.IsPressed)
+        {
+            CharController.JumpInput();
+        }
         if (left.IsPressed)
         {
             CharController.MoveLeft();
@@ -70,18 +78,19 @@ public class ButtonController : MonoBehaviour {
         {
             CharController.MoveRight();
         }
-        if (jump.IsPressed)
+        if (!left.IsPressed && !right.IsPressed)
         {
-            CharController.JumpInput();
+            CharController.ResetDirection();
         }
+
     }
     private void PrintCurrentTouchPos()
     {
-        //for (int i = 0; i < Input.touchCount; i++)
-        //{
-        //    print(Input.touches[i].ToString() + new Vector2(Input.touches[i].position.x,ScreenReverseY(Input.touches[i].position.y)).ToString());
-        //}
-        
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            print(Input.touches[i].ToString() + new Vector2(Input.touches[i].position.x, ScreenReverseY(Input.touches[i].position.y)).ToString());
+        }
+
     }
     private float ScreenReverseY(float Y)
     {

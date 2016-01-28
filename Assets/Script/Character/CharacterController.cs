@@ -118,7 +118,7 @@ public class CharacterController : MonoBehaviour
         PlayerJump();
     }                      //jump
     //-------------------------------   Reset
-    private void ResetDirection()
+    public void ResetDirection()
     {
         dir = 0;
     }

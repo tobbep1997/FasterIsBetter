@@ -34,16 +34,15 @@ public class UIRectangle {
         get { return _yMax; }
     }
 
-    private T? CheckIfNull<T>(T type) where 
-        T : struct
+    //Checks if current T is null and returns its defult value if the current T is null
+    private T? CheckIfNull<T>(T type) where     
+        T : struct                              
     {
-        if (type.Equals(null))
-        {
-            return default(T);
-        }
+        if (type.Equals(null))        
+            return default(T);        
         return type;
     }
-
+    //--------------------------------------------  Construcors
     public UIRectangle()
     {
         _Position = Vector2.zero;
@@ -70,12 +69,12 @@ public class UIRectangle {
         _xMax = _Position.x + _Width;
         _yMax = _Position.y + _Hight;
     }
-
-    public bool ContainsVector(Vector2 vector)
+    //--------------------------------------------  functions
+    public bool ContainsVector(Vector2 vector)  //Returns true if the current vector is inside of the rectangle
     {
-        if (vector.x >= _Position.x && vector.x <= _Position.x + _Width)
-            if (vector.y >= _Position.y && vector.y <= _Position.y + _Hight)
+        if (vector.x >= _Position.x && vector.x <= _xMax)
+            if (vector.y >= _Position.y && vector.y <= _yMax)
                 return true;
         return false;
-    }
+    } 
 }
