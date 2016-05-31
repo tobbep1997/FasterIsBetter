@@ -72,9 +72,6 @@ public class UIRectangle {
     //--------------------------------------------  functions
     public bool ContainsVector(Vector2 vector)  //Returns true if the current vector is inside of the rectangle
     {
-        if (vector.x >= _Position.x && vector.x <= _xMax)
-            if (vector.y >= _Position.y && vector.y <= _yMax)
-                return true;
-        return false;
+        return vector.x >= _Position.x && vector.x <= _xMax && vector.y >= _Position.y && vector.y <= _yMax;
     } 
 }

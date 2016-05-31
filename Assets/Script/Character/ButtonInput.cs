@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 
+[RequireComponent(typeof(DrawButton))]
 public class ButtonInput : MonoBehaviour {
 
-    [SerializeField]
-    private RectTransform ButtonRect;
     private bool UsingButtons;
     [SerializeField]
     private UIRectangle UIRect;
@@ -14,11 +11,15 @@ public class ButtonInput : MonoBehaviour {
     public bool IsPressed
     {
         get { return _isPressed; }
-    } 
+    }
+
+    public DrawButton drawButton;
 
     //--------------------------------------------------    Unity Standard Functions
     private void Start()
     {
+        drawButton = GetComponent<DrawButton>();
+
         switch (PlayerPrefs.GetInt("Controller_Type"))
         {
             case 0:
@@ -30,13 +31,14 @@ public class ButtonInput : MonoBehaviour {
                 UsingButtons = true;
                 break;
         }
-        Vector2 temp = ButtonRect.rect.position.ReturnScreenPosition(Camera.main);
-        UIRect = new UIRectangle(ButtonRect.position,ButtonRect.rect.width,ButtonRect.rect.height);
-        //UIRect = new UIRectangle(temp, new Vector2(ButtonRect.rect.position.x + ButtonRect.rect.width, ButtonRect.rect.position.y).ReturnScreenPosition(Camera.main).x - temp.x,
-        //                               new Vector2(ButtonRect.rect.position.x, ButtonRect.rect.position.y + ButtonRect.rect.height).ReturnScreenPosition(Camera.main).y - temp.y);     
+
+        UIRect = new UIRectangle(drawButton.Position, drawButton.Texture.width * drawButton.Scale, drawButton.Texture.height * drawButton.Scale);
     }
     private void Update()
     {
+
+        UIRect = new UIRectangle(drawButton.Position, drawButton.Texture.width * drawButton.Scale, drawButton.Texture.height * drawButton.Scale);
+
         if (!UsingButtons)
             return;        
         Check_Touch_Position_Within_ButtonRect();
@@ -49,11 +51,9 @@ public class ButtonInput : MonoBehaviour {
         {
             for (int i = 0; i < Input.touchCount; i++)
             {
-                //new Vector2(Input.touches[i].position.x, ScreenReverseY(Input.touches[i].position.y))
-                if (UIRect.ContainsVector(Input.touches[i].position))
+                if (UIRect.ContainsVector(new Vector2(Input.touches[i].position.x,ScreenReverseY(Input.touches[i].position.y))))
                 {
                     _isPressed = true;
-                    print("pressed " + gameObject.name);
                     break;
                 }          
                 else
@@ -72,7 +72,7 @@ public class ButtonInput : MonoBehaviour {
     //--------------------------------------------------
     public string DisplayInformation()
     {
-        return gameObject.name + " " + ButtonRect.position.ToString();
+        return gameObject.name + " " + UIRect.Position.ToString();
     }
 
 }

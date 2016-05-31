@@ -10,8 +10,8 @@ public class TouchDebug : MonoBehaviour
         if (Input.touchCount >= 0)
         {
             foreach (Touch touch in Input.touches)
-            { 
-                
+            {
+                print(touch.position);
             }
         }
     
