@@ -11,6 +11,7 @@ public class ButtonController : MonoBehaviour {
     private CharacterController CharController;
 
     private enum controllerType { Touch, Buttons, TactButton, InverTactButton }
+    [SerializeField]
     private controllerType controll_Type;
 
     private float currentDirrection = 0;
@@ -58,13 +59,13 @@ public class ButtonController : MonoBehaviour {
         switch (controll_Type)
         {
             case controllerType.Buttons:
-                CheckButtons(Buttons.Left, Buttons.Right, Buttons.Jump);
+                CheckButtons(Buttons.Left, Buttons.Right, Buttons.Jump, Buttons.Interact);
                 break;
             case controllerType.TactButton:
-                CheckButtons(Tatical_Buttons.Left, Tatical_Buttons.Right, Tatical_Buttons.Jump);
+                CheckButtons(Tatical_Buttons.Left, Tatical_Buttons.Right, Tatical_Buttons.Jump,Tatical_Buttons.Interact);
                 break;
             case controllerType.InverTactButton:
-                CheckButtons(Inversed_Tatical_Buttons.Left, Inversed_Tatical_Buttons.Right, Inversed_Tatical_Buttons.Jump);
+                CheckButtons(Inversed_Tatical_Buttons.Left, Inversed_Tatical_Buttons.Right, Inversed_Tatical_Buttons.Jump, Inversed_Tatical_Buttons.Interact);
                 break;
         }
     }
@@ -86,7 +87,7 @@ public class ButtonController : MonoBehaviour {
                 Buttons.Jump.drawButton.Position.x = Buttons.Left.drawButton.Position.x + (Buttons.Jump.drawButton.Texture.width * Buttons.Jump.drawButton.Scale) + xWidth;
                 Buttons.Right.drawButton.Position.x = screenWidth - (Buttons.Right.drawButton.Texture.width * Buttons.Right.drawButton.Scale) - xWidth;
 
-
+                Buttons.Interact.drawButton.Position.x = Buttons.Right.drawButton.Position.x - (Buttons.Interact.drawButton.Texture.width * Buttons.Interact.drawButton.Scale) - xWidth;
 
                 break;
             case controllerType.TactButton:
@@ -98,6 +99,8 @@ public class ButtonController : MonoBehaviour {
                 Tatical_Buttons.Right.drawButton.Position.x = screenWidth - (Tatical_Buttons.Right.drawButton.Texture.width * Tatical_Buttons.Right.drawButton.Scale) - xWidth;
                 Tatical_Buttons.Left.drawButton.Position.x = Tatical_Buttons.Right.drawButton.Position.x - (Tatical_Buttons.Left.drawButton.Texture.width * Tatical_Buttons.Left.drawButton.Scale) - xWidth;
 
+                Tatical_Buttons.Interact.drawButton.Position.x = Tatical_Buttons.Jump.drawButton.Position.x + (Tatical_Buttons.Interact.drawButton.Texture.width * Tatical_Buttons.Interact.drawButton.Scale) + xWidth;
+
                 break;
             case controllerType.InverTactButton:
 
@@ -108,11 +111,13 @@ public class ButtonController : MonoBehaviour {
                 Inversed_Tatical_Buttons.Right.drawButton.Position.x = Inversed_Tatical_Buttons.Left.drawButton.Position.x + (Inversed_Tatical_Buttons.Right.drawButton.Texture.width * Inversed_Tatical_Buttons.Right.drawButton.Scale) + xWidth;
                 Inversed_Tatical_Buttons.Jump.drawButton.Position.x = screenWidth - (Inversed_Tatical_Buttons.Jump.drawButton.Texture.width * Inversed_Tatical_Buttons.Jump.drawButton.Scale) - xWidth;
 
+                Inversed_Tatical_Buttons.Interact.drawButton.Position.x = Inversed_Tatical_Buttons.Jump.drawButton.Position.x - (Inversed_Tatical_Buttons.Interact.drawButton.Texture.width * Inversed_Tatical_Buttons.Interact.drawButton.Scale) - xWidth;
+
                 break;
         }
     }
 
-    private void CheckButtons(ButtonInput left, ButtonInput right, ButtonInput jump)
+    private void CheckButtons(ButtonInput left, ButtonInput right, ButtonInput jump, ButtonInput Interact)
     {
         if (jump.IsPressed)
         {
@@ -136,7 +141,8 @@ public class ButtonController : MonoBehaviour {
         {
             CharController.ResetDirection();
         }
-
+        if (Interact.IsPressed)
+            EventManager.CallPlayerInteract();
     }
     private void PrintCurrentTouchPos()
     {
@@ -158,19 +164,21 @@ public class Controller_Type
     [SerializeField]
     private GameObject Group;
     [SerializeField]
-    private ButtonInput left, right, jump, Interact;
+    private ButtonInput left, right, jump, interact;
 
     public void SetButtonScale(float scale)
     {
         left.drawButton.Scale = scale;
         jump.drawButton.Scale = scale;
         right.drawButton.Scale = scale;
+        interact.drawButton.Scale = scale;
     }
     public void SetYPos(float yPos)
     {
         left.drawButton.Position.y = yPos;
         jump.drawButton.Position.y = yPos;
         right.drawButton.Position.y = yPos;
+        interact.drawButton.Position.y = yPos;
     }
 
     public ButtonInput Left
@@ -184,6 +192,10 @@ public class Controller_Type
     public ButtonInput Jump
     {
         get { return jump; }
+    }
+    public ButtonInput Interact
+    {
+        get { return interact; }
     }
     //----------------------------
     public void Enable(bool enable)

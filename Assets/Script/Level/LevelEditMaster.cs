@@ -42,21 +42,22 @@ public class LevelEditMaster : MonoBehaviour
         ReversSettings();
 
         UpdateTiles();
+        CleanTiles();
+        UpdateTiles();
+        
         EnableAllColiders();
-        CleanTiles();        
 
 
         UpdateColliders();
         GetNewColliders();
         CreateNewColliders();
 
-        DrawColliderLine();
 
         RemoveNullTiles();
     }
 
 
-    private void CleanTiles()
+    private void CleanTiles()//Removes the double tils //activateTileCleaner
     {
         if (adminControlls.activateTileCleaner)
         {
@@ -78,8 +79,24 @@ public class LevelEditMaster : MonoBehaviour
                 DestroyImmediate(col.gameObject);
             }
         }
+        Thread.Sleep(1000);
+
+
+        adminControlls.forceTileUpdate = false;
+        GameObject[] tempObjs = GameObject.FindGameObjectsWithTag("Ground");
+        LevelEdits = new List<LevelEdit>();
+
+        foreach (GameObject item in tempObjs)
+        {
+            LevelEdit edit = item.GetComponent<LevelEdit>();
+            if (edit != null)
+            {
+                LevelEdits.Add(edit);
+            }
+        }
+        Thread.Sleep(1000);
     }
-    private void UpdateTiles()
+    private void UpdateTiles()//Gets all the LevelEdits in the scene //forceUpdate
     {
         if (LevelEdits.Count <= 0 || adminControlls.forceTileUpdate)
         {
@@ -95,9 +112,8 @@ public class LevelEditMaster : MonoBehaviour
                     LevelEdits.Add(edit);
                 }
             }
+        Thread.Sleep(1000);
         }
-
-        
     }
    
     private void RemoveNullTiles()
@@ -116,6 +132,7 @@ public class LevelEditMaster : MonoBehaviour
         {
             DestroyImmediate(tempEdits[i]);
         }
+
     }
     private void EnableAllColiders()
     {
@@ -132,8 +149,9 @@ public class LevelEditMaster : MonoBehaviour
         {
             item.CurrentCollider.enabled = true;
         }
+        Thread.Sleep(1000);
     }
-    private void UpdateColliders()
+    private void UpdateColliders()//Disables the colliders that are unnessesry //RemoveColliders
     {
         if (!adminControlls.RemoveColliders)
         {
@@ -147,6 +165,7 @@ public class LevelEditMaster : MonoBehaviour
         {
             item.CurrentCollider.enabled = !item.UseCollider;
         }
+        Thread.Sleep(1000);
     }
 
     private void GetNewColliders()
@@ -170,10 +189,9 @@ public class LevelEditMaster : MonoBehaviour
             }
             //Vertical
             LevelEdit[] temp = edits[i].GetAllEditsInDir(Mathf.PI / 2, UsedEdits.ToArray());
-            if (temp == null)
-            {
+            if (temp == null)            
                 continue;
-            }
+            
             CollidersOnTiles.Add(new ColliderOnTiles(temp));
 
             for (int x = 0; x < temp.Length; x++)
@@ -201,15 +219,8 @@ public class LevelEditMaster : MonoBehaviour
             }
 
         }
+        Thread.Sleep(1000);
 
-    }
-    private void DrawColliderLine()
-    {
-        foreach (var levelEdit in CollidersOnTiles)
-        {
-            levelEdit.DrawColliderLines(ColliderOnTiles.Angel.Vertical);
-            levelEdit.DrawColliderLines(ColliderOnTiles.Angel.Horizontal);
-        }
     }
     private void CreateNewColliders()
     {
@@ -224,6 +235,15 @@ public class LevelEditMaster : MonoBehaviour
         {
             item.CreateNewColliders(ColliderGameobject);
             item.RemoveOriginalColliders();
+        }
+        Thread.Sleep(1000);
+    }
+    private void DrawColliderLine()
+    {
+        foreach (var levelEdit in CollidersOnTiles)
+        {
+            levelEdit.DrawColliderLines(ColliderOnTiles.Angel.Vertical);
+            levelEdit.DrawColliderLines(ColliderOnTiles.Angel.Horizontal);
         }
     }
 
@@ -263,12 +283,17 @@ public class ColliderOnTiles
     public void DrawColliderLines(Angel angel)
     {
         Vector2 max = Vector2.zero, min  = Vector2.zero;
-
+        if (Edits == null)
+        {
+            return;
+        }
         switch (angel)
         {
             case Angel.Horizontal:
                 for (int i = 0; i < Edits.Length; i++)
                 {
+                    if (Edits[i] == null)
+                        continue;
                     if (Edits[i].CurrentCollider.bounds.center.x > max.x || max == Vector2.zero)
                     {
                         max = Edits[i].CurrentCollider.bounds.center;                        
@@ -284,6 +309,8 @@ public class ColliderOnTiles
             case Angel.Vertical:
                 for (int i = 0; i < Edits.Length; i++)
                 {
+                    if (Edits[i] == null)
+                        continue;
                     if (Edits[i].CurrentCollider.bounds.center.y > max.y || max == Vector2.zero)
                     {
                         max = Edits[i].CurrentCollider.bounds.center;
@@ -368,7 +395,7 @@ public class ColliderOnTiles
 [System.Serializable]
 public class AdminControlls
 {    
-    public bool activateTileCleaner, forceTileUpdate, enableAllColiders, RemoveColliders, getNewColliders, CreateNewCollider;
+    public bool activateTileCleaner = false, forceTileUpdate = false, enableAllColiders = false, RemoveColliders = false, getNewColliders = false, CreateNewCollider = false;
 }
 
 

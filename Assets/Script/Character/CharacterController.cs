@@ -56,7 +56,7 @@ public class CharacterController : MonoBehaviour
     void Start()
     {
 
-        if (Application.platform != RuntimePlatform.WindowsEditor || true)
+        if (Application.platform != RuntimePlatform.WindowsEditor)
         {
             switch (PlayerPrefs.GetInt("Controller_Type"))
             {

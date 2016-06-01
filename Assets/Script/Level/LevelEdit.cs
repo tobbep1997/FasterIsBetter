@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 [ExecuteInEditMode]//This makes sure that the script is always running
-[System.Serializable]
 public class LevelEdit : MonoBehaviour {	
     /// <summary>
     /// This makes it easier to make levels and makes sure that everything is connected to a grid
@@ -33,13 +32,12 @@ public class LevelEdit : MonoBehaviour {
 	void Update ()  
     {
 
-        if (Application.isEditor)
+        if (!Application.isEditor)
         {
             return;
-        }
-
+        }     
         SetPosition();
-
+        
         UpdateColliderCheck();
 
         if (_CurrentCollider == null)
@@ -64,8 +62,8 @@ public class LevelEdit : MonoBehaviour {
         if (vCurrentPos != vPreviousPos)
         {
             transform.position = new Vector3((Mathf.Round(transform.position.x / (vCell_size.x)) * (vCell_size.x)),
-                                             (Mathf.Round(transform.position.y / (vCell_size.y)) * (vCell_size.y)),
-                                             transform.position.z);
+                                                 (Mathf.Round(transform.position.y / (vCell_size.y)) * (vCell_size.y)),
+                                                 transform.position.z);
         }
         vPreviousPos = vCurrentPos;
     }
